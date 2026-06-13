@@ -388,7 +388,11 @@ function setupGraph() {
       x: groupAnchor(node.group).x + (Math.random() - 0.5) * 80,
       y: groupAnchor(node.group).y + (Math.random() - 0.5) * 80
     }));
-    state.links = graphData.edges.map((edge) => ({ ...edge }));
+    // Sparser view: drop the dense intra-domain "related" cliques; keep the
+    // structural domain->course links and the project/concept connections.
+    state.links = graphData.edges
+      .filter((edge) => edge.relation !== "related")
+      .map((edge) => ({ ...edge }));
     buildAdjacency();
 
     state.svg = d3.select(root).append("svg")
