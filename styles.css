@@ -1220,3 +1220,9 @@ p {
 .stack-lg > .section-heading {
   margin-bottom: 0;
 }
+
+/* ---------- Empty-state lead line ---------- */
+.empty-state__lead {
+  font-size: 18px;
+  color: var(--color-text);
+}
