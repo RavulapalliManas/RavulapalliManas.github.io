@@ -1,0 +1,21 @@
+---
+layout: page
+permalink: /teaching/
+nav: teaching
+title: "Teaching"
+eyebrow: "Courses and mentorship"
+intro: "Courses I have designed, co-designed, or assisted at Ashoka University."
+description: "Courses designed and taught at Ashoka University."
+---
+
+<section class="entry-list entry-list--bordered" aria-label="Teaching">
+  {%- assign courses = site.teaching | sort: "order" %}
+  {%- for course in courses %}
+  <article class="entry-item">
+    <p class="entry-item__meta">{{ course.meta }}</p>
+    <h3><a href="{{ course.url | relative_url }}">{{ course.title }}</a></h3>
+    <p class="entry-item__excerpt">{{ course.excerpt | strip_html }}</p>
+    <a class="inline-link" href="{{ course.url | relative_url }}">Course details &rarr;</a>
+  </article>
+  {%- endfor %}
+</section>

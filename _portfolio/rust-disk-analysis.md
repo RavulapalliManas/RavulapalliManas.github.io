@@ -1,9 +1,16 @@
 ---
-title: "High-Performance Disk Analysis Tool (Rust)"
-excerpt: "Asynchronous Rust application to traverse file systems and visualize disk usage."
-collection: portfolio
+title: "High-performance disk analysis tool"
+order: 4
+meta: "Asynchronous Rust, with a Tauri interface"
+excerpt: "An asynchronous Rust application that traverses file systems, visualises disk usage, and finds duplicates by cryptographic hash."
+tags:
+  - Rust
+  - Tauri
+  - Systems
 ---
 
-**High-Performance Disk Analysis Tool (Rust)**
+An asynchronous Rust application that traverses file systems, visualises disk
+usage, and detects duplicate files by cryptographic hash.
 
-Built an asynchronous Rust application to traverse file systems, visualize disk usage, and detect duplicate files via cryptographic hashing. Includes a Tauri-based UI with real-time progress tracking and interactive cleanup tools.
+The interface is built with Tauri, and reports progress in real time while the
+scan runs. Cleanup is interactive rather than automatic.

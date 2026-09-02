@@ -1,17 +1,19 @@
 ---
-title: "Teaching Head - Introductory Electrophysiology"
-collection: teaching
-type: "Undergraduate Course"
-permalink: /teaching/2025-10-ashoka-electro
-venue: "Ashoka University"
+title: "Introductory Electrophysiology"
 date: 2025-10-01
-location: "Sonipat, Haryana"
+order: 2
+role: "Teaching Assistant"
+venue: "Ashoka University"
+period: "October 2025 &ndash; November 2025"
+meta: "Teaching Assistant &middot; Ashoka University &middot; October 2025 to November 2025"
+excerpt: "A hands-on course for 10 students on running an Axon rig, with ERG and EAG practicals and Python spike train analysis."
 ---
 
-*October 2025 – November 2025*
+I designed and taught this hands-on course for 10 students.
 
-*   Designed and taught an introductory electrophysiology course for 10 students.
-*   Trained students on setup, maintenance, and troubleshooting of Axon patch-clamp rigs.
-*   Conducted ERG and EAG experiments on carpenter ants using light and odor stimuli.
-*   Taught insect culture maintenance and ant husbandry techniques.
-*   Conducted tutorials on spike train analysis using Python.
+Students learned to set up, maintain, and error-check an Axon rig for patch
+clamp and microelectrode recording. The practicals covered ERG and EAG
+recording on carpenter ants, using light and odour stimuli. Students also
+learned insect culture maintenance and ant husbandry.
+
+I ran the tutorials on spike train analysis in Python.

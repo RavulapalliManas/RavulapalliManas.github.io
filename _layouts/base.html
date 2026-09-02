@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include head.html %}
+{%- if page.load_graph %}
+  <script src="https://d3js.org/d3.v7.min.js" defer></script>
+{%- endif %}
+  <script type="module" src="{{ '/main.js' | relative_url }}" defer></script>
+</head>
+<body data-page="{{ page.nav | default: 'page' }}">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+{% include nav.html %}
+
+  <main id="main-content">
+{{ content }}
+  </main>
+
+{% include footer.html %}
+</body>
+</html>

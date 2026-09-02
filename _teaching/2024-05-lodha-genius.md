@@ -1,17 +1,17 @@
 ---
-title: "Teaching Assistant - Lodha Genius Program"
-collection: teaching
-type: "Mentorship and Workshop"
-permalink: /teaching/2024-05-lodha-genius
-venue: "Ashoka University"
+title: "Lodha Genius Programme"
 date: 2024-05-01
-location: "Sonipat, Haryana"
+order: 3
+role: "Teaching Assistant"
+venue: "Ashoka University"
+period: "May 2024 &ndash; June 2024"
+meta: "Teaching Assistant &middot; Ashoka University &middot; May 2024 to June 2024"
+excerpt: "Mentored microscopy and life sciences projects for school students, and taught introductory Python."
 ---
 
-*May 2024 – June 2024*
+I mentored microscopy projects for students in grades 11 and 12, including work
+with complex lens systems, and introduced fluorescence and confocal microscopy.
 
-*   Mentored microscopy projects for 11th and 12th grade students, including complex lens systems.
-*   Introduced fluorescence and confocal microscopy concepts.
-*   Taught introductory Python programming using NumPy and Matplotlib.
-*   Supervised life sciences projects involving *Drosophila*, *C. elegans*, and embryo imaging.
-*   Provided technical support for microscopy hardware and software.
+I taught introductory Python using NumPy and Matplotlib, and supervised life
+sciences projects on *Drosophila*, *C. elegans*, and embryo imaging. I also
+provided technical support for the microscopy hardware and software.

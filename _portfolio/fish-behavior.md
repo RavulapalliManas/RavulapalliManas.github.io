@@ -1,9 +1,19 @@
 ---
-title: "Quantification, Analysis, and Modeling of Fish Behavior"
-excerpt: "Automated behavioral tracking pipeline using OpenCV and YOLOv11."
-collection: portfolio
+title: "Zebrafish collective behaviour"
+order: 2
+meta: "Tracking pipeline and agent-based modelling"
+excerpt: "A tracking pipeline for shoaling distance, velocity, thigmotaxis, and turning-angle distributions, paired with agent-based simulations."
+tags:
+  - OpenCV
+  - YOLO
+  - Agent-based modelling
+  - Behaviour
 ---
 
-**Quantification, Analysis, and Modeling of Fish Behavior**
+A tracking pipeline that extracts shoaling distance, velocity, thigmotaxis, and
+turning-angle distributions from video.
 
-Developed an automated pipeline using OpenCV and YOLOv11 for fish behavior analysis and recording. Simulated fish movement using reinforcement learning agents and agent-based modeling. Built a custom portal for synthetic video generation.
+Agent-based simulations then reproduce the measured behaviour and quantify
+polarisation and nearest-neighbour distributions. The pipeline replaced manual
+scoring in the Neuro-ethology Lab at Ashoka University, and runs alongside
+closed-loop infrastructure for zebrafish virtual reality.

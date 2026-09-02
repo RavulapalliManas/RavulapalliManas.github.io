@@ -1,178 +1,101 @@
-<!-- FILE: about.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A research-focused overview of interests, environments, methods, and contact details.">
-  <title>About | Ravulapalli Manas Venkata Sai</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script type="module" src="main.js" defer></script>
-</head>
-<body data-page="about">
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+---
+layout: page
+permalink: /about/
+nav: about
+title: "About"
+eyebrow: "Biography"
+narrow: true
+description: "Computer Science student at Ashoka University, Chief Scientist at Perseus, working on predictive learning and the development of structure in neural and artificial systems."
+---
 
-  <header class="site-header">
-    <nav class="site-nav" aria-label="Primary navigation">
-      <div class="site-nav__inner shell">
-        <a class="site-brand" href="index.html">Manas Ravulapalli</a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-panel" aria-label="Open navigation menu">
-          <span aria-hidden="true">☰</span>
-        </button>
-        <div class="site-nav__panel" id="site-nav-panel">
-          <a class="site-nav__link" href="index.html">Home</a>
-          <a class="site-nav__link is-active" href="about.html">About</a>
-          <a class="site-nav__link" href="photography.html">Photography</a>
-          <a class="site-nav__link" href="blog.html">Blog</a>
-        </div>
-      </div>
-    </nav>
-  </header>
+<section class="stack-md">
+  <div class="prose">
+    <p>I work on normative and computational theory of how neural systems build structured internal models of the world, and on the same question in artificial systems.</p>
+    <p>My thesis derives a quotient law for predictive learning. A recurrent predictive network trained on egocentric observations represents state space only up to the symmetry subgroup whose actions are indistinguishable from self-motion. That law predicts when place fields should repeat across identical rooms.</p>
+    <p>I am also interested in successor-style and factorised representations, in the TEM and SR lineage, and in the developmental question of when representational structure becomes usable during training. That second question covers critical-period effects in language models, and the gap between what a model represents and what it actually uses at query time.</p>
+    <p>I am looking to do theory-first computational neuroscience in close contact with experimental data, not wet-lab work.</p>
+  </div>
+  <div class="contact-links">
+    <a href="mailto:{{ site.author.email }}">Email</a>
+    <a href="{{ site.author.github }}">GitHub</a>
+    <a href="{{ site.author.linkedin }}">LinkedIn</a>
+    <a href="{{ '/cv/' | relative_url }}">CV</a>
+  </div>
+</section>
 
-  <main id="main-content">
-    <section class="section page-section">
-      <div class="shell stack-lg">
-        <header class="page-header page-header--narrow">
-          <p class="eyebrow">Biography</p>
-          <h1>About</h1>
-          <div class="prose">
-            <p>I am a Computer Science student at Ashoka University with a minor in Biology and Psychology. My work sits between neuroethology, computational neuroscience, scientific imaging, and tool-building for research workflows.</p>
-            <p>Across academic and lab settings, I have worked on automated zebrafish movement analysis, electrophysiology workflows, microscopy-heavy biology questions, and mathematical modelling for neural systems. I am especially interested in building interfaces and analysis tools that make experimental work more legible and reproducible.</p>
-          </div>
-          <div class="contact-links">
-            <a href="mailto:rmanasofficial@gmail.com">Email</a>
-            <a href="https://github.com/RavulapalliManas">GitHub</a>
-            <a href="https://www.linkedin.com/in/manas-ravulapalli-386433220/">LinkedIn</a>
-          </div>
-        </header>
-
-        <section class="stack-md">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Academic snapshot</p>
-              <h2>Academic Snapshot</h2>
-            </div>
-          </div>
-          <dl class="snapshot-list">
-            <div class="snapshot-item">
-              <dt>Degree</dt>
-              <dd>B.Sc. (Hons.) Computer Science, Ashoka University, 2023–2027</dd>
-            </div>
-            <div class="snapshot-item">
-              <dt>Minor</dt>
-              <dd>Biology and Psychology</dd>
-            </div>
-            <div class="snapshot-item">
-              <dt>CGPA</dt>
-              <dd>3.66 / 4.00</dd>
-            </div>
-            <div class="snapshot-item">
-              <dt>Dean's List</dt>
-              <dd>Monsoon 2023, Spring 2025, Monsoon 2025</dd>
-            </div>
-            <div class="snapshot-item">
-              <dt>Location</dt>
-              <dd>Sonipat, Haryana, India</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class="stack-md">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Experience</p>
-              <h2>Research environments</h2>
-            </div>
-          </div>
-          <div class="experience-list">
-            <article class="experience-item">
-              <div>
-                <h3>European Molecular Biology Laboratory (EMBL Heidelberg)</h3>
-                <p class="experience-item__role">Research environment</p>
-                <p>Worked on evolutionary neuroscience, developmental self-organization, and biophysical microscopy questions in Heidelberg, using light-sheet, confocal, and optical-tweezer workflows.</p>
-              </div>
-            </article>
-            <article class="experience-item">
-              <div>
-                <h3>Neural Systems Lab</h3>
-                <p class="experience-item__role">Research environment</p>
-                <p>Learned electrophysiology setup, calibration, and behavioural assay workflows while improving annotation and segmentation pipelines with BORIS and Ilastik.</p>
-              </div>
-            </article>
-            <article class="experience-item">
-              <div>
-                <h3>Neuro-ethology Lab</h3>
-                <p class="experience-item__role">Research environment</p>
-                <p>Developing automated behaviour analysis tools and protocol design for zebrafish experiments, including closed-loop systems and numerical ability studies.</p>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section class="stack-md">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Capabilities</p>
-              <h2>Tools and methods</h2>
-            </div>
-          </div>
-          <div class="tools-grid">
-            <article class="tools-block">
-              <h3>Programming</h3>
-              <div class="tag-row">
-                <span class="tag">Python</span>
-                <span class="tag">Rust</span>
-                <span class="tag">C/C++</span>
-                <span class="tag">JavaScript</span>
-                <span class="tag">MATLAB</span>
-                <span class="tag">Docker</span>
-                <span class="tag">Git</span>
-                <span class="tag">Jupyter</span>
-              </div>
-            </article>
-            <article class="tools-block">
-              <h3>Scientific software</h3>
-              <div class="tag-row">
-                <span class="tag">Suite2p</span>
-                <span class="tag">Napari</span>
-                <span class="tag">DeepLabCut</span>
-                <span class="tag">SLEAP</span>
-                <span class="tag">YOLO</span>
-                <span class="tag">Roboflow</span>
-                <span class="tag">PyTorch</span>
-                <span class="tag">SpikeInterface</span>
-                <span class="tag">Kilosort</span>
-                <span class="tag">NEURON</span>
-                <span class="tag">NEST</span>
-              </div>
-            </article>
-            <article class="tools-block">
-              <h3>Imaging and analysis</h3>
-              <div class="tag-row">
-                <span class="tag">Confocal microscopy</span>
-                <span class="tag">Light-sheet microscopy</span>
-                <span class="tag">Optical tweezers</span>
-                <span class="tag">ImageJ/Fiji</span>
-                <span class="tag">Ilastik</span>
-                <span class="tag">BORIS</span>
-                <span class="tag">3D reconstruction</span>
-                <span class="tag">Kymograph interpretation</span>
-              </div>
-            </article>
-          </div>
-        </section>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="shell site-footer__inner">
-      <p>Ravulapalli Manas Venkata Sai</p>
-      <p><a href="mailto:rmanasofficial@gmail.com">Email</a> · <a href="https://github.com/RavulapalliManas">GitHub</a> · <a href="https://www.linkedin.com/in/manas-ravulapalli-386433220/">LinkedIn</a> · <a href="feed.xml">RSS</a></p>
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Academic snapshot</p>
+      <h2>Education</h2>
     </div>
-  </footer>
-</body>
-</html>
+  </div>
+  <dl class="snapshot-list">
+    <div class="snapshot-item">
+      <dt>Degree</dt>
+      <dd>B.Sc. (Hons.) Computer Science, Ashoka University, August 2023 to May 2027 (expected)</dd>
+    </div>
+    <div class="snapshot-item">
+      <dt>Minors</dt>
+      <dd>Biology and Psychology</dd>
+    </div>
+    <div class="snapshot-item">
+      <dt>GPA</dt>
+      <dd>3.66 / 4.00</dd>
+    </div>
+    <div class="snapshot-item">
+      <dt>Thesis supervisor</dt>
+      <dd>Prof. Debayan Gupta</dd>
+    </div>
+    <div class="snapshot-item">
+      <dt>School</dt>
+      <dd>Delhi Public School, Hyderabad, 2022</dd>
+    </div>
+    <div class="snapshot-item">
+      <dt>Location</dt>
+      <dd>Sonipat, Haryana, India</dd>
+    </div>
+  </dl>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Experience</p>
+      <h2>Research positions</h2>
+    </div>
+  </div>
+  <div class="experience-list">
+    <article class="experience-item">
+      <h3>Perseus</h3>
+      <p class="experience-item__role">Chief Scientist &middot; Remote &middot; 2025 to present</p>
+      <p>I set and lead the research agenda across four lines, and supervise a small research team and external collaborations.</p>
+      <ul class="detail-list">
+        <li><strong>Coding world models.</strong> Learned models of a codebase and its execution behaviour that an agent can roll forward and plan against, rather than retrieving text. Related architectural work adapts TEM-style structural priors as a persistent, slot-structured state on a transformer backbone.</li>
+        <li><strong>Developmental pretraining.</strong> The experimental programme on when capabilities become acquirable, retainable, and recoverable during training, from a small controlled model up to OLMo-2 continued pretraining, under a preregistration protocol with predictions filed before launch.</li>
+        <li><strong>Interpretability.</strong> The instrument stack for the routing and binding programme: Jacobian-based binding probes, path patching, and per-checkpoint developmental sweeps. I ran an adversarial audit of our own corpus that retracted several previously published numbers.</li>
+        <li><strong>Evaluation.</strong> I direct BioBench, an external-facing benchmark for biological mechanism reasoning. It uses a symbolic verifier that certifies or rejects a chain of reasoning, rather than scoring accuracy.</li>
+      </ul>
+    </article>
+    <article class="experience-item">
+      <h3>Ashoka University</h3>
+      <p class="experience-item__role">Independent Research, thesis &middot; Sonipat &middot; August 2025 to present</p>
+      <p>Predictive RNNs and cognitive map formation. I implemented the Levenstein et al. (2024) sequential predictive RNN to test how environment statistics drive map formation, and built the diagnostics for representational structure: occupancy-normalised mutual information, geodesic sRSA, participation ratio, RDM Frobenius delta, and persistent homology.</p>
+    </article>
+    <article class="experience-item">
+      <h3>European Molecular Biology Laboratory</h3>
+      <p class="experience-item__role">Summer Student &middot; Heidelberg, Germany &middot; July 2025</p>
+      <p>I used optical tweezers to study how transcription factors locate specific DNA sequences, and analysed kymographs to interpret binding dynamics. I also worked with light-sheet and confocal platforms, applied bio-image analysis and 3D reconstruction to microscopy volumes, and evaluated how algorithm choice propagates into biological interpretation.</p>
+    </article>
+    <article class="experience-item">
+      <h3>Neural Systems Lab, University of Hyderabad</h3>
+      <p class="experience-item__role">Summer Research Assistant &middot; Hyderabad &middot; June to August 2025</p>
+      <p>I ran insect electrophysiology, including setup and calibration of the recording rig, and bulk drug tracing in grasshoppers for pathway visualisation. I designed and ran behavioural assays in weaver ants, including mirror-recognition replications, and introduced BORIS and Ilastik to the lab's analysis workflow.</p>
+    </article>
+    <article class="experience-item">
+      <h3>Neuro-ethology Lab, Ashoka University</h3>
+      <p class="experience-item__role">Research Assistant &middot; Sonipat &middot; August 2024 to present</p>
+      <p>I built an automated zebrafish tracking and movement-analysis tool with OpenCV and YOLOv8 to replace manual scoring, and the closed-loop infrastructure for zebrafish virtual reality. I am developing a behavioural paradigm for numerical abilities in a zebrafish subpopulation, and wrote the lab's recording and analysis protocols.</p>
+    </article>
+  </div>
+</section>

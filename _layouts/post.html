@@ -1,0 +1,35 @@
+---
+layout: base
+---
+<article class="section page-section">
+  <div class="shell stack-lg">
+    <header class="page-header page-header--narrow">
+      <p class="eyebrow">
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+        {%- if page.read_time %} &middot; {{ content | number_of_words | divided_by: 200 | plus: 1 }} min read{% endif %}
+      </p>
+      <h1>{{ page.title }}</h1>
+      {%- if page.excerpt and page.show_excerpt %}<p class="page-intro">{{ page.excerpt | strip_html }}</p>{% endif %}
+      {%- if page.tags and page.tags.size > 0 %}
+      <div class="tag-row">
+        {%- for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+      </div>
+      {%- endif %}
+    </header>
+
+    <div class="prose prose--page">
+      {{ content }}
+    </div>
+
+    <nav class="post-nav" aria-label="Post navigation">
+      {%- if page.previous %}
+      <a class="post-nav__link" href="{{ page.previous.url | relative_url }}">&larr; {{ page.previous.title }}</a>
+      {%- else %}<span></span>{% endif %}
+      {%- if page.next %}
+      <a class="post-nav__link post-nav__link--next" href="{{ page.next.url | relative_url }}">{{ page.next.title }} &rarr;</a>
+      {%- endif %}
+    </nav>
+
+    <p><a class="inline-link" href="{{ '/writing/' | relative_url }}">&larr; All writing</a></p>
+  </div>
+</article>

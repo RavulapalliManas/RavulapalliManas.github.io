@@ -26,11 +26,25 @@ function setupNav() {
     return;
   }
 
+  function setOpen(open) {
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+    nav.classList.toggle("is-open", open);
+  }
+
   toggle.addEventListener("click", () => {
-    const expanded = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!expanded));
-    toggle.setAttribute("aria-label", expanded ? "Open navigation menu" : "Close navigation menu");
-    nav.classList.toggle("is-open", !expanded);
+    setOpen(toggle.getAttribute("aria-expanded") !== "true");
+  });
+
+  nav.querySelectorAll(".site-nav__link").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && nav.classList.contains("is-open")) {
+      setOpen(false);
+      toggle.focus();
+    }
   });
 }
 
@@ -109,6 +123,11 @@ function setupLightbox() {
   });
 }
 
+const GRAPH_PADDING = 14;
+const GRAPH_LABEL_ROOM = 12;
+// A domain node's caption is drawn above it, centred, and is wider than its box.
+const GRAPH_DOMAIN_LABEL_ROOM = 60;
+
 function setupGraph() {
   const root = document.getElementById("knowledge-graph");
   if (!root || !window.d3) {
@@ -133,7 +152,7 @@ function setupGraph() {
     activeGroups: new Set(Object.keys(groupLabels)),
     adjacency: new Map(),
     width: 0,
-    height: 540,
+    height: 780,
     simulation: null,
     svg: null,
     viewport: null,
@@ -186,13 +205,13 @@ function setupGraph() {
   function defaultPanel() {
     panelTitle.textContent = "Select a node";
     panelMeta.textContent = "Hover to preview. Click to pin a node and inspect how it connects to the rest of the portfolio.";
-    panelDescription.textContent = "The graph supports drag, zoom, pan, hover highlighting, and click-based detail views. It is driven by JSON and rendered with D3 from a CDN, so it remains GitHub Pages-friendly.";
+    panelDescription.textContent = "Drag a node to move it. Scroll to zoom. Use search to focus the graph on one term.";
     panelDetails.innerHTML = [
-      "<li>Drag nodes to perturb the layout.</li>",
-      "<li>Use search to focus the graph in context.</li>",
-      "<li>Click a connection chip to follow relationships.</li>"
+      "<li>Drag a node to move it.</li>",
+      "<li>Search to focus the graph on one term.</li>",
+      "<li>Click a connection to follow it.</li>"
     ].join("");
-    panelLinks.innerHTML = '<a class="button button--ghost" href="about.html">About</a><a class="button button--ghost" href="blog.html">Blog</a>';
+    panelLinks.innerHTML = "";
     panelConnections.innerHTML = '<span class="chip">No node selected</span>';
   }
 
@@ -208,7 +227,7 @@ function setupGraph() {
     panelDetails.innerHTML = (node.details || []).map((detail) => `<li>${detail}</li>`).join("");
     panelLinks.innerHTML = (node.links && node.links.length)
       ? node.links.map((link) => `<a class="button button--ghost" href="${link.url}">${link.label}</a>`).join("")
-      : '<a class="button button--ghost" href="about.html">About</a>';
+      : "";
 
     const related = neighborsOf(node.id)
       .map((id) => state.nodes.find((entry) => entry.id === id))
@@ -337,7 +356,7 @@ function setupGraph() {
       const box = text.node().getBBox();
       node.boxWidth = Math.max(box.width + 20, node.kind === "domain" ? 124 : 108);
       node.boxHeight = Math.max(box.height + 16, 40);
-      node.collisionRadius = Math.max(node.boxWidth, node.boxHeight) * 0.58;
+      node.collisionRadius = Math.sqrt(node.boxWidth * node.boxWidth + node.boxHeight * node.boxHeight) / 2 + 4;
       group.select("rect")
         .attr("x", -node.boxWidth / 2)
         .attr("y", -node.boxHeight / 2)
@@ -348,7 +367,25 @@ function setupGraph() {
     });
   }
 
+  function clampToFrame(node) {
+    const halfWidth = (node.boxWidth || 108) / 2;
+    const halfHeight = (node.boxHeight || 40) / 2;
+    const labelRoom = node.kind === "domain" ? GRAPH_DOMAIN_LABEL_ROOM : 0;
+    const padX = halfWidth + GRAPH_PADDING + labelRoom;
+    const padY = halfHeight + GRAPH_PADDING + GRAPH_LABEL_ROOM;
+    node.x = Math.max(padX, Math.min(state.width - padX, node.x));
+    node.y = Math.max(padY, Math.min(state.height - padY, node.y));
+    if (node.fx !== null && node.fx !== undefined) {
+      node.fx = node.x;
+    }
+    if (node.fy !== null && node.fy !== undefined) {
+      node.fy = node.y;
+    }
+  }
+
   function ticked() {
+    state.nodes.forEach(clampToFrame);
+
     state.linkSelection
       .attr("x1", (link) => link.source.x)
       .attr("y1", (link) => link.source.y)
@@ -401,7 +438,7 @@ function setupGraph() {
       .attr("aria-label", "Interactive knowledge graph");
 
     state.viewport = state.svg.append("g");
-    state.zoom = d3.zoom().scaleExtent([0.6, 2.3]).on("zoom", (event) => {
+    state.zoom = d3.zoom().scaleExtent([0.35, 2.6]).on("zoom", (event) => {
       state.viewport.attr("transform", event.transform);
     });
     state.svg.call(state.zoom);
@@ -473,28 +510,35 @@ function setupGraph() {
 
     state.simulation = d3.forceSimulation(state.nodes)
       .force("link", d3.forceLink(state.links).id((node) => node.id).distance((link) => {
-        if (link.relation === "contains") return 90;
-        if (link.relation === "related") return 72;
-        return 100;
+        if (link.relation === "contains") return 74;
+        if (link.relation === "related") return 60;
+        return 84;
       }).strength((link) => {
         if (link.relation === "contains") return 0.24;
         if (link.relation === "related") return 0.12;
         return 0.18;
       }))
       .force("charge", d3.forceManyBody().strength((node) => {
-        if (node.kind === "domain") return -1000;
-        if (node.kind === "project") return -650;
-        return -400;
+        if (node.kind === "domain") return -780;
+        if (node.kind === "project") return -520;
+        return -330;
       }))
-      .force("collide", d3.forceCollide().radius((node) => node.collisionRadius || 60).iterations(2))
-      .force("x", d3.forceX().x((node) => groupAnchor(node.group).x).strength((node) => node.kind === "domain" ? 0.28 : 0.12))
-      .force("y", d3.forceY().y((node) => groupAnchor(node.group).y).strength((node) => node.kind === "domain" ? 0.28 : 0.12))
+      .force("collide", d3.forceCollide().radius((node) => node.collisionRadius || 60).iterations(4).strength(1))
+      .force("x", d3.forceX().x((node) => groupAnchor(node.group).x).strength((node) => node.kind === "domain" ? 0.34 : 0.18))
+      .force("y", d3.forceY().y((node) => groupAnchor(node.group).y).strength((node) => node.kind === "domain" ? 0.34 : 0.18))
       .force("center", d3.forceCenter(state.width / 2, state.height / 2))
       .stop();
 
     // Pre-run the simulation so the graph appears already settled on load (no entrance animation).
     for (let i = 0; i < 300; i += 1) {
       state.simulation.tick();
+    }
+    // Clamp the settled layout into the frame, then let collision resolve any
+    // overlap the clamp created, so nothing is drawn outside the canvas.
+    state.nodes.forEach(clampToFrame);
+    for (let i = 0; i < 160; i += 1) {
+      state.simulation.tick();
+      state.nodes.forEach(clampToFrame);
     }
     ticked();
     state.simulation.on("tick", ticked);

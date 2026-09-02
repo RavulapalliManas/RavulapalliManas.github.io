@@ -1,18 +1,19 @@
 ---
-title: "Teaching Head - Computational and Theoretical Neuroscience"
-collection: teaching
-type: "Undergraduate Course"
-permalink: /teaching/2025-01-ashoka-neuro
-venue: "Ashoka University"
+title: "Computational and Theoretical Neuroscience"
 date: 2025-01-01
-location: "Sonipat, Haryana"
+order: 1
+role: "Teaching Fellow"
+venue: "Ashoka University"
+period: "January 2025 &ndash; May 2025"
+meta: "Teaching Fellow &middot; Ashoka University &middot; January 2025 to May 2025"
+excerpt: "Co-designed an undergraduate course with Prof. Bittu K. Rajaraman, delivered 15 lectures, and ran the journal club."
 ---
 
-*January 2025 – May 2025*
+I co-designed this undergraduate course with Prof. Bittu K. Rajaraman, delivered
+15 lectures over the semester, and ran the journal club.
 
-*   Co-designed and co-taught a **Computational and Theoretical Neuroscience** course with Prof. Bittu K. Rajaraman.
-*   Delivered 15 lectures over one semester and organized a journal club.
-*   Prepared MATLAB-based lectures and assignments covering:
-    *   Neural encoding and decoding
-    *   Point, rate, and compartmental models
-    *   Perceptrons, recurrent networks, and Hopfield networks
+I wrote the MATLAB assignments. They cover:
+
+- neural encoding and decoding,
+- point, rate, and compartmental models,
+- perceptrons, recurrent networks, and Hopfield networks.

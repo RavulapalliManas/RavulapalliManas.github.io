@@ -1,20 +1,36 @@
-{% include base_path %}
-
+{%- assign page_title = page.title | default: site.title -%}
+{%- if page.title and page.url != "/" -%}
+  {%- assign full_title = page_title | append: " | " | append: site.title -%}
+{%- else -%}
+  {%- assign full_title = site.title -%}
+{%- endif -%}
+{%- assign page_description = page.description | default: page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 200 -%}
+{%- assign canonical = page.url | replace: "index.html", "" | absolute_url -%}
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ full_title }}</title>
+<meta name="description" content="{{ page_description }}">
+<meta name="author" content="{{ site.author.name }}">
+<link rel="canonical" href="{{ canonical }}">
 
-{% include seo.html %}
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ page_description }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:image" content="{{ '/images/og-card.png' | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title }}">
+<meta name="twitter:description" content="{{ page_description }}">
+<meta name="twitter:image" content="{{ '/images/og-card.png' | absolute_url }}">
 
-<link href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ base_path }}/feed.xml{% endif %}" type="application/atom+xml" rel="alternate" title="{{ site.title }} Feed">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script>
-  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
-</script>
+<link rel="icon" href="{{ '/images/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="icon" href="{{ '/images/favicon-32x32.png' | relative_url }}" sizes="32x32">
+<link rel="icon" href="{{ '/images/favicon-192x192.png' | relative_url }}" sizes="192x192">
+<link rel="apple-touch-icon" href="{{ '/images/apple-touch-icon-180x180.png' | relative_url }}">
+<link rel="alternate" type="application/atom+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-
-<!-- For all browsers -->
-<link rel="stylesheet" href="{{ base_path }}/assets/css/main.css">
+<link rel="stylesheet" href="{{ '/styles.css' | relative_url }}">

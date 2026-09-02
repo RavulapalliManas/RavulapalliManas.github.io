@@ -1,0 +1,14 @@
+# Photography gallery.
+#
+# To add a photo:
+#   1. Put the image file in images/photos/
+#   2. Add an entry below.
+#
+# Every field is required. `alt` describes the image for screen readers and for
+# anyone whose images fail to load. Write what is in the frame.
+#
+# - file: reef-at-dusk.jpg
+#   caption: "Reef at dusk"
+#   alt: "A shallow reef under low orange light, with two fish in the foreground."
+#   tags: [Underwater, Wildlife]
+

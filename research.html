@@ -1,0 +1,42 @@
+---
+layout: page
+permalink: /research/
+nav: research
+title: "Research"
+eyebrow: "Papers and manuscripts"
+intro: "Four write-ups, none of them published yet. Each one states its current status. Nothing here is peer-reviewed."
+description: "Papers and manuscripts on predictive learning, continued pretraining, and mechanistic interpretability."
+---
+
+<section class="entry-list entry-list--bordered" aria-label="Papers and manuscripts">
+  {%- assign papers = site.publications | sort: "order" %}
+  {%- for paper in papers %}
+  <article class="entry-item">
+    <p class="entry-item__meta">{{ paper.meta }}</p>
+    <h3><a href="{{ paper.url | relative_url }}">{{ paper.title }}</a></h3>
+    <p class="entry-status">{{ paper.status }}</p>
+    <p class="entry-item__excerpt">{{ paper.excerpt | strip_html }}</p>
+    {%- if paper.tags %}
+    <div class="tag-row">
+      {%- for tag in paper.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+    </div>
+    {%- endif %}
+    <a class="inline-link" href="{{ paper.url | relative_url }}">Read the summary &rarr;</a>
+  </article>
+  {%- endfor %}
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Thesis</p>
+      <h2>Independent Study Module, Ashoka University</h2>
+    </div>
+  </div>
+  <div class="prose">
+    <p><strong>Cognitive maps are symmetry quotients: why place fields repeat in identical rooms.</strong> Supervised by Prof. Debayan Gupta, August 2025 to present.</p>
+    <p>The module implements the Levenstein et al. (2024) sequential predictive RNN, with NormReLU, rollout <code>k = 5</code>, and RMSProp under per-parameter learning-rate scaling, to test how environment statistics drive map formation.</p>
+    <p>The diagnostics for representational structure are occupancy-normalised mutual information, geodesic sRSA computed via Dijkstra for non-convex arenas, participation ratio, RDM Frobenius delta, and persistent homology via Ripser.</p>
+    <p>The topology-before-geometry hypothesis asks whether correct Betti numbers emerge before metric structure. It is tested across ten environments that vary geometry, topology, scale, and aliasing, in RatInABox and MiniGrid.</p>
+  </div>
+</section>

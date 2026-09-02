@@ -1,0 +1,156 @@
+---
+layout: base
+---
+<section class="section section--hero">
+  <div class="shell hero">
+    <div class="hero__content">
+      <p class="eyebrow">{{ page.eyebrow }}</p>
+      <h1>{{ site.author.name }}</h1>
+      <p class="hero__description">{{ page.hero_description }}</p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="{{ '/research/' | relative_url }}">Research</a>
+        <a class="button button--ghost" href="{{ '/projects/' | relative_url }}">Projects</a>
+        <a class="button button--ghost" href="{{ '/cv/' | relative_url }}">CV</a>
+      </div>
+      <div class="chip-row" aria-label="Affiliations and research areas">
+        {%- for chip in page.chips %}<span class="chip">{{ chip }}</span>{% endfor %}
+      </div>
+    </div>
+    <div class="hero__media">
+      <div class="hero__image-frame">
+        <img src="{{ page.hero_image | relative_url }}" alt="{{ page.hero_image_alt }}" width="520" height="520">
+      </div>
+    </div>
+  </div>
+</section>
+
+{{ content }}
+
+<section class="section">
+  <div class="shell shell--wide">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Knowledge graph</p>
+        <h2>How the coursework, methods, and projects connect</h2>
+        <p class="section-subtitle">Each academic domain forms its own cluster around a hub node. Concepts and projects bridge the clusters. Search a term, filter a domain, or click a node to see what it links to.</p>
+      </div>
+    </div>
+
+    <div class="graph-card">
+      <div class="graph-shell">
+        <div class="graph-main">
+          <div class="graph-toolbar">
+            <label class="sr-only" for="graph-search">Search the knowledge graph</label>
+            <input id="graph-search" class="input" type="search" placeholder="Search concepts, tools, or projects">
+            <button id="graph-reset" class="button button--ghost" type="button">Reset view</button>
+          </div>
+          <div class="graph-filters" aria-label="Filter graph categories">
+            <button class="filter-pill is-active" type="button" data-filter="cs" aria-pressed="true">Computer Science</button>
+            <button class="filter-pill is-active" type="button" data-filter="math" aria-pressed="true">Mathematics</button>
+            <button class="filter-pill is-active" type="button" data-filter="bio" aria-pressed="true">Biology and Neuroscience</button>
+            <button class="filter-pill is-active" type="button" data-filter="humanities" aria-pressed="true">Humanities and Practice</button>
+            <button class="filter-pill is-active" type="button" data-filter="concept" aria-pressed="true">Concepts</button>
+            <button class="filter-pill is-active" type="button" data-filter="project" aria-pressed="true">Projects</button>
+          </div>
+          <div id="knowledge-graph" class="graph-canvas" aria-label="Interactive knowledge graph"></div>
+        </div>
+
+        <aside class="graph-panel" aria-live="polite">
+          <p class="eyebrow eyebrow--panel">Detail panel</p>
+          <h3 id="graph-panel-title">Select a node</h3>
+          <p id="graph-panel-meta" class="graph-panel__meta">Hover to preview. Click to pin a node and see how it connects to the rest of the portfolio.</p>
+          <p id="graph-panel-description" class="graph-panel__description">Drag a node to move it. Scroll to zoom. Use search to focus the graph on one term.</p>
+          <ul id="graph-panel-details" class="graph-panel__list">
+            <li>Drag a node to move it.</li>
+            <li>Search to focus the graph on one term.</li>
+            <li>Click a connection to follow it.</li>
+          </ul>
+          <div id="graph-panel-links" class="graph-panel__links"></div>
+          <div class="graph-panel__connections-wrap">
+            <p class="graph-panel__connections-label">Connections</p>
+            <div id="graph-panel-connections" class="graph-panel__connections">
+              <span class="chip">No node selected</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- assign featured_papers = site.publications | sort: "date" | reverse -%}
+{%- if featured_papers.size > 0 %}
+<section class="section">
+  <div class="shell">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Papers and manuscripts</p>
+        <h2>Current write-ups</h2>
+      </div>
+      <p class="section-subtitle"><a class="inline-link" href="{{ '/research/' | relative_url }}">All research &rarr;</a></p>
+    </div>
+    <div class="entry-list">
+      {%- for paper in featured_papers limit: 3 %}
+      <article class="entry-item">
+        <p class="entry-item__meta">{{ paper.status }}</p>
+        <h3><a href="{{ paper.url | relative_url }}">{{ paper.title }}</a></h3>
+        <p class="entry-item__excerpt">{{ paper.excerpt | strip_html }}</p>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- assign featured_projects = site.portfolio | sort: "order" -%}
+{%- if featured_projects.size > 0 %}
+<section class="section">
+  <div class="shell">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Selected work</p>
+        <h2>Projects rooted in research practice</h2>
+      </div>
+      <p class="section-subtitle"><a class="inline-link" href="{{ '/projects/' | relative_url }}">All projects &rarr;</a></p>
+    </div>
+    <div class="card-grid card-grid--projects">
+      {%- for project in featured_projects limit: 4 %}
+      <article class="card">
+        <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+        <p>{{ project.excerpt | strip_html }}</p>
+        {%- if project.tags %}
+        <div class="tag-row">
+          {%- for tag in project.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+        </div>
+        {%- endif %}
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- assign recent_posts = site.posts -%}
+{%- if recent_posts.size > 0 %}
+<section class="section">
+  <div class="shell">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Recent writing</p>
+        <h2>Notes and research-adjacent writing</h2>
+      </div>
+      <p class="section-subtitle"><a class="inline-link" href="{{ '/writing/' | relative_url }}">All writing &rarr;</a></p>
+    </div>
+    <div class="writing-list">
+      {%- for post in recent_posts limit: 3 %}
+      <article class="writing-card">
+        <p class="writing-card__date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time></p>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        <p class="writing-card__excerpt">{{ post.excerpt | strip_html | normalize_whitespace | truncate: 200 }}</p>
+        <a class="inline-link" href="{{ post.url | relative_url }}">Read post &rarr;</a>
+      </article>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+{%- endif %}

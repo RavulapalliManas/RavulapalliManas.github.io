@@ -1,0 +1,254 @@
+---
+layout: page
+permalink: /cv/
+nav: cv
+title: "Curriculum vitae"
+eyebrow: "CV"
+intro: "Education, research positions, papers, teaching, training, and technical skills."
+description: "Curriculum vitae: education, research positions, papers, teaching, training, and technical skills."
+---
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Contact</p>
+      <h2>Ravulapalli Manas Venkata Sai</h2>
+    </div>
+  </div>
+  <div class="contact-links">
+    <a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a>
+    <a href="{{ site.author.github }}">github.com/RavulapalliManas</a>
+    <a href="{{ site.author.linkedin }}">LinkedIn</a>
+  </div>
+  <p class="cv-note">Ashoka University, Sonipat, Haryana, India.</p>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Education</p>
+      <h2>Education</h2>
+    </div>
+  </div>
+  <div class="cv-list">
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>Ashoka University</h3>
+        <p class="cv-entry__aside">Sonipat, HR, India</p>
+      </div>
+      <p class="cv-entry__role">B.Sc. (Hons.) Computer Science, minors in Biology and Psychology. GPA 3.66 / 4.00. August 2023 to May 2027 (expected).</p>
+      <ul class="detail-list">
+        <li><strong>Thesis (ISM):</strong> Cognitive maps are symmetry quotients: why place fields repeat in identical rooms. Supervisor: Prof. Debayan Gupta.</li>
+      </ul>
+    </article>
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>Delhi Public School</h3>
+        <p class="cv-entry__aside">2022</p>
+      </div>
+      <p class="cv-entry__role">Hyderabad, TG. Mathematics, Physics, Chemistry, Computer Science.</p>
+    </article>
+  </div>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Papers and manuscripts</p>
+      <h2>Papers and manuscripts</h2>
+    </div>
+  </div>
+  <div class="cv-list">
+    {%- assign papers = site.publications | sort: "order" %}
+    {%- for paper in papers %}
+    <article class="cv-entry">
+      <h3><a href="{{ paper.url | relative_url }}">{{ paper.title }}</a></h3>
+      <p class="cv-entry__role">{{ paper.meta }}</p>
+      <p class="entry-status">{{ paper.status }}</p>
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Research experience</p>
+      <h2>Research experience</h2>
+    </div>
+  </div>
+  <div class="cv-list">
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>Perseus</h3>
+        <p class="cv-entry__aside">Remote</p>
+      </div>
+      <p class="cv-entry__role">Chief Scientist. 2025 to present.</p>
+      <ul class="detail-list">
+        <li>Set and lead the company's research agenda across four lines: world models for code, developmental and continued pretraining, mechanistic interpretability, and evaluation. Supervise a small research team and external collaborations.</li>
+        <li><strong>Coding world models.</strong> Leading work on learned models of a codebase and its execution behaviour that an agent can roll forward and plan against, rather than retrieving text. Related architectural work adapts TEM-style structural priors as a persistent, slot-structured state on a transformer backbone.</li>
+        <li><strong>Developmental pretraining.</strong> Built the experimental programme on when capabilities become acquirable, retainable, and recoverable during training, from a small controlled model up to OLMo-2 continued pretraining, under a preregistration protocol with predictions frozen before launch.</li>
+        <li><strong>Interpretability.</strong> Built the instrument stack for the routing and binding programme: Jacobian-based binding probes, path patching, per-checkpoint developmental sweeps. Ran an adversarial audit of our own corpus that retracted several previously published numbers.</li>
+        <li><strong>Evaluation.</strong> Direct BioBench, an external-facing benchmark for biological mechanism reasoning built on a symbolic verifier that certifies or rejects a chain of reasoning rather than scoring accuracy. Developed with external research partners including ARC.</li>
+      </ul>
+    </article>
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>Independent Research (ISM Thesis), Ashoka University</h3>
+        <p class="cv-entry__aside">Sonipat, HR</p>
+      </div>
+      <p class="cv-entry__role">Predictive RNNs and cognitive map formation. August 2025 to present.</p>
+      <ul class="detail-list">
+        <li>Implemented the Levenstein et al. (2024) sequential predictive RNN, with NormReLU, rollout <code>k = 5</code>, and RMSProp under per-parameter learning-rate scaling, to test how environment statistics drive map formation.</li>
+        <li>Built diagnostics for representational structure: occupancy-normalised mutual information, geodesic sRSA via Dijkstra for non-convex arenas, participation ratio, RDM Frobenius delta, and persistent homology via Ripser.</li>
+        <li>Tested a topology-before-geometry hypothesis, whether correct Betti numbers emerge before metric structure, across ten environments varying geometry, topology, scale, and aliasing, in RatInABox and MiniGrid.</li>
+      </ul>
+    </article>
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>European Molecular Biology Laboratory (EMBL)</h3>
+        <p class="cv-entry__aside">Heidelberg, Germany</p>
+      </div>
+      <p class="cv-entry__role">Summer Student. July 2025.</p>
+      <ul class="detail-list">
+        <li>Used optical tweezers to study how transcription factors locate specific DNA sequences, analysing kymographs to interpret binding dynamics. Also worked with light-sheet and confocal platforms.</li>
+        <li>Applied bio-image analysis, 3D reconstruction, and geometrical modelling to microscopy volumes, and evaluated how algorithm choice propagates into biological interpretation.</li>
+      </ul>
+    </article>
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>Neural Systems Lab, University of Hyderabad</h3>
+        <p class="cv-entry__aside">Hyderabad, TG</p>
+      </div>
+      <p class="cv-entry__role">Summer Research Assistant. June to August 2025.</p>
+      <ul class="detail-list">
+        <li>Ran insect electrophysiology, including setup and calibration of the recording rig, and bulk drug tracing in grasshoppers for pathway visualisation.</li>
+        <li>Designed and ran behavioural assays in weaver ants, including mirror-recognition replications. Introduced BORIS and Ilastik to the lab's analysis workflow.</li>
+      </ul>
+    </article>
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>Neuro-ethology Lab, Ashoka University</h3>
+        <p class="cv-entry__aside">Sonipat, HR</p>
+      </div>
+      <p class="cv-entry__role">Research Assistant. August 2024 to present.</p>
+      <ul class="detail-list">
+        <li>Built an automated zebrafish tracking and movement-analysis tool with OpenCV and YOLOv8 to replace manual scoring, and the closed-loop infrastructure for zebrafish virtual reality.</li>
+        <li>Developing a behavioural paradigm for numerical abilities in a zebrafish subpopulation. Wrote the lab's recording and analysis protocols.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Training and conferences</p>
+      <h2>Training and conferences</h2>
+    </div>
+  </div>
+  <div class="cv-list">
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3>CAMP 2026, Computational Approaches to Memory and Plasticity</h3>
+        <p class="cv-entry__aside">IISER Pune, India</p>
+      </div>
+      <p class="cv-entry__role">Selected participant. 2026.</p>
+      <ul class="detail-list">
+        <li>Project on the goldfish oculomotor integrator (Seung et al.): NEURON simulation and dynamical systems analysis of persistent activity.</li>
+        <li>Also implemented a Brian2 spiking Q-learning bandit and a Tsodyks&ndash;Markram dynamic synapse network.</li>
+      </ul>
+    </article>
+    <article class="cv-entry">
+      <h3>Conferences attended</h3>
+      <ul class="detail-list">
+        <li>exSPLORe, Conference on Machine Learning, Optimization and Reinforcement Learning. January 2025.</li>
+        <li>BrainDY, Brain Non-linear Dynamics Conference. December 2024.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Teaching</p>
+      <h2>Teaching</h2>
+    </div>
+  </div>
+  <div class="cv-list">
+    {%- assign courses = site.teaching | sort: "order" %}
+    {%- for course in courses %}
+    <article class="cv-entry">
+      <div class="cv-entry__head">
+        <h3><a href="{{ course.url | relative_url }}">{{ course.title }}</a></h3>
+        <p class="cv-entry__aside">{{ course.venue }}</p>
+      </div>
+      <p class="cv-entry__role">{{ course.role }}. {{ course.period }}.</p>
+      <p class="entry-item__excerpt">{{ course.excerpt | strip_html }}</p>
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Selected projects</p>
+      <h2>Selected projects</h2>
+    </div>
+  </div>
+  <div class="cv-list">
+    {%- assign projects = site.portfolio | sort: "order" %}
+    {%- for project in projects %}
+    <article class="cv-entry">
+      <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+      <p class="entry-item__excerpt">{{ project.excerpt | strip_html }}</p>
+    </article>
+    {%- endfor %}
+  </div>
+</section>
+
+<section class="stack-md">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Technical skills</p>
+      <h2>Technical skills</h2>
+    </div>
+  </div>
+  <dl class="skills-list">
+    <div class="skills-item">
+      <dt>Modelling and theory</dt>
+      <dd>Recurrent and predictive networks, continuous attractor networks, reinforcement learning, representational geometry (RSA, participation ratio, RDMs), persistent homology, dynamical systems analysis, transformer interpretability (probing, path patching)</dd>
+    </div>
+    <div class="skills-item">
+      <dt>Programming</dt>
+      <dd>Python, C++, C, Rust, MATLAB, JavaScript, C#, Assembly (MIPS, RISC)</dd>
+    </div>
+    <div class="skills-item">
+      <dt>Scientific computing</dt>
+      <dd>PyTorch, NumPy, SciPy, statsmodels, PyMC, Brian2, NEURON, NEST, Elephant, RatInABox, MiniGrid, Ripser, Git, Docker</dd>
+    </div>
+    <div class="skills-item">
+      <dt>Statistics</dt>
+      <dd>Regression, mixed-effects models, Bayesian inference, survival analysis, pre-registered hypothesis testing, bootstrap and cluster-aware inference, power analysis</dd>
+    </div>
+    <div class="skills-item">
+      <dt>Neural data analysis</dt>
+      <dd>SpikeInterface, Kilosort, Open Ephys, Suite2p, SIMA, DeepLabCut, SLEAP, Napari. SPM for voxelwise fMRI statistics, with fMRIPrep and nilearn for ROI and connectivity modelling</dd>
+    </div>
+    <div class="skills-item">
+      <dt>Experimental</dt>
+      <dd>Patch clamp, intra- and extracellular microelectrode recording, LFP, ERG and EAG, rig setup and maintenance, dissection, bulk drug tracing, behavioural paradigm design</dd>
+    </div>
+    <div class="skills-item">
+      <dt>Microscopy and imaging</dt>
+      <dd>Light sheet, confocal, fluorescence, optical and scanning electron microscopy, optical tweezers. ImageJ/Fiji, Ilastik, BORIS, kymograph interpretation, 3D reconstruction</dd>
+    </div>
+    <div class="skills-item">
+      <dt>Systems</dt>
+      <dd>Closed-loop experimental systems, ML inference pipelines, RESTful APIs, Node.js, React, Tauri, SQL (MySQL, PostgreSQL), MongoDB, AWS</dd>
+    </div>
+  </dl>
+  <p class="cv-note">References available on request.</p>
+</section>

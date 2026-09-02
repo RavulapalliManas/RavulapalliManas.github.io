@@ -1,0 +1,25 @@
+---
+layout: page
+permalink: /projects/
+nav: projects
+title: "Projects"
+eyebrow: "Selected work"
+intro: "Modelling work, analysis pipelines, and tools built for research environments."
+description: "Modelling work, analysis pipelines, and research tools."
+---
+
+<section class="card-grid card-grid--projects" aria-label="Projects">
+  {%- assign projects = site.portfolio | sort: "order" %}
+  {%- for project in projects %}
+  <article class="card">
+    <p class="entry-item__meta">{{ project.meta }}</p>
+    <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+    <p>{{ project.excerpt | strip_html }}</p>
+    {%- if project.tags %}
+    <div class="tag-row">
+      {%- for tag in project.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+    </div>
+    {%- endif %}
+  </article>
+  {%- endfor %}
+</section>

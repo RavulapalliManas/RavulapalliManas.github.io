@@ -1,202 +1,41 @@
-<!-- FILE: index.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Academic portfolio of Ravulapalli Manas Venkata Sai.">
-  <title>Home | Ravulapalli Manas Venkata Sai</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://d3js.org/d3.v7.min.js" defer></script>
-  <script type="module" src="main.js" defer></script>
-</head>
-<body data-page="home">
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+---
+layout: home
+nav: home
+load_graph: true
+eyebrow: "Computational and theoretical neuroscience"
+hero_description: "I work on how neural systems build structured internal models of the world, and on the same question in artificial systems. My thesis derives a quotient law for predictive learning: a recurrent network trained on egocentric observations represents state space only up to the symmetry subgroup whose actions it cannot distinguish from self-motion."
+hero_image: /images/manas-hero.jpg
+hero_image_alt: "Ravulapalli Manas Venkata Sai."
+chips:
+  - "Ashoka University"
+  - "Chief Scientist, Perseus"
+  - "Predictive learning"
+  - "Developmental pretraining"
+  - "Mechanistic interpretability"
+description: "Computational and theoretical neuroscience: how neural systems build structured internal models of the world, and the same question in artificial systems."
+---
 
-  <header class="site-header">
-    <nav class="site-nav" aria-label="Primary navigation">
-      <div class="site-nav__inner shell">
-        <a class="site-brand" href="index.html">Manas Ravulapalli</a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav-panel" aria-label="Open navigation menu">
-          <span aria-hidden="true">☰</span>
-        </button>
-        <div class="site-nav__panel" id="site-nav-panel">
-          <a class="site-nav__link is-active" href="index.html">Home</a>
-          <a class="site-nav__link" href="about.html">About</a>
-          <a class="site-nav__link" href="photography.html">Photography</a>
-          <a class="site-nav__link" href="blog.html">Blog</a>
-        </div>
+<section class="section">
+  <div class="shell">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Research interests</p>
+        <h2>Where the work sits</h2>
       </div>
-    </nav>
-  </header>
-
-  <main id="main-content">
-    <section class="section section--hero">
-      <div class="shell hero">
-        <div class="hero__content">
-          <p class="eyebrow">Research, code, and visual thinking</p>
-          <h1>Ravulapalli Manas Venkata Sai</h1>
-          <p class="hero__description">Computer Science student at Ashoka University working across neuroethology, computational neuroscience, scientific imaging, and tool-building for research environments.</p>
-          <div class="hero__actions">
-            <a class="button button--primary" href="about.html">About</a>
-            <a class="button button--ghost" href="blog.html">Writing</a>
-            <a class="button button--ghost" href="photography.html">Photography</a>
-          </div>
-          <div class="chip-row" aria-label="Research tags">
-            <span class="chip">Ashoka University</span>
-            <span class="chip">Neuroethology</span>
-            <span class="chip">Computational Neuroscience</span>
-            <span class="chip">Scientific Imaging</span>
-          </div>
-        </div>
-        <div class="hero__media">
-          <div class="hero__image-frame">
-            <img src="images/manas-hero.jpg" alt="Ravulapalli Manas Venkata Sai seated outdoors on grass in a childhood photograph.">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Knowledge graph</p>
-            <h2>Research themes as a living network</h2>
-          </div>
-          <p class="section-subtitle">The graph is now organized into explicit academic sections. Biology and neuroscience courses link to each other, CS courses link to each other, mathematics courses link to each other, and humanities courses link to each other around their own domain hubs.</p>
-        </div>
-
-        <div class="graph-card">
-          <div class="graph-shell">
-            <div class="graph-main">
-              <div class="graph-toolbar">
-                <label class="sr-only" for="graph-search">Search the knowledge graph</label>
-                <input id="graph-search" class="input" type="search" placeholder="Search concepts, tools, or projects">
-                <button id="graph-reset" class="button button--ghost" type="button">Reset view</button>
-              </div>
-              <div class="graph-filters" aria-label="Filter graph categories">
-                <button class="filter-pill is-active" type="button" data-filter="cs" aria-pressed="true">Computer Science</button>
-                <button class="filter-pill is-active" type="button" data-filter="math" aria-pressed="true">Mathematics</button>
-                <button class="filter-pill is-active" type="button" data-filter="bio" aria-pressed="true">Biology and Neuroscience</button>
-                <button class="filter-pill is-active" type="button" data-filter="humanities" aria-pressed="true">Humanities and Practice</button>
-                <button class="filter-pill is-active" type="button" data-filter="concept" aria-pressed="true">Concepts</button>
-                <button class="filter-pill is-active" type="button" data-filter="project" aria-pressed="true">Projects</button>
-              </div>
-              <div id="knowledge-graph" class="graph-canvas" aria-label="Interactive knowledge graph"></div>
-            </div>
-
-            <aside class="graph-panel" aria-live="polite">
-              <p class="eyebrow eyebrow--panel">Detail panel</p>
-              <h3 id="graph-panel-title">Select a node</h3>
-              <p id="graph-panel-meta" class="graph-panel__meta">Hover to preview. Click to pin a node and inspect how it connects to the rest of the portfolio.</p>
-              <p id="graph-panel-description" class="graph-panel__description">The graph supports drag, zoom, pan, hover highlighting, and click-based detail views. It is driven by JSON and rendered with D3 from a CDN, so it remains GitHub Pages-friendly.</p>
-              <ul id="graph-panel-details" class="graph-panel__list">
-                <li>Drag nodes to perturb the layout.</li>
-                <li>Use search to focus the graph in context.</li>
-                <li>Click a connection chip to follow relationships.</li>
-              </ul>
-              <div id="graph-panel-links" class="graph-panel__links">
-                <a class="button button--ghost" href="about.html">About</a>
-                <a class="button button--ghost" href="blog.html">Blog</a>
-              </div>
-              <div class="graph-panel__connections-wrap">
-                <p class="graph-panel__connections-label">Connections</p>
-                <div id="graph-panel-connections" class="graph-panel__connections">
-                  <span class="chip">No node selected</span>
-                </div>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Selected work</p>
-            <h2>Projects rooted in research practice</h2>
-          </div>
-        </div>
-        <div class="card-grid card-grid--projects">
-          <article class="card">
-            <h3>Sequential Predictive RNN for Cognitive Maps</h3>
-            <p>A sequential predictive RNN (Levenstein et al., 2024) probing how environmental statistics — symmetry, topology, and landmark uniqueness — drive the geometry of learned cognitive maps, measured with sRSA, participation ratio, and persistent homology.</p>
-            <div class="tag-row">
-              <span class="tag">RNN</span>
-              <span class="tag">RatInABox</span>
-              <span class="tag">Persistent Homology</span>
-              <span class="tag">PyTorch</span>
-            </div>
-          </article>
-          <article class="card">
-            <h3>Grid Cell Distortion Under Reward</h3>
-            <p>A continuous attractor (CANN) model of how reward gradients warp grid-cell firing fields and the toroidal manifold of population activity, characterised with grid-score analysis and Betti-number computation.</p>
-            <div class="tag-row">
-              <span class="tag">CANN</span>
-              <span class="tag">Reinforcement Learning</span>
-              <span class="tag">Topology</span>
-            </div>
-          </article>
-          <article class="card">
-            <h3>Zebrafish Behaviour Analysis &amp; Modeling</h3>
-            <p>A YOLOv8 and OpenCV multi-animal tracking pipeline, plus an RL and agent-based model that reproduces naturalistic shoaling and collective dynamics from empirically derived behavioural distributions.</p>
-            <div class="tag-row">
-              <span class="tag">YOLOv8</span>
-              <span class="tag">OpenCV</span>
-              <span class="tag">Reinforcement Learning</span>
-              <span class="tag">Behaviour</span>
-            </div>
-          </article>
-          <article class="card">
-            <h3>Cognitive Assessment Platform for Neurodegeneration</h3>
-            <p>A digital assessment platform that quantifies attention, working memory, and motor deficits in Alzheimer's, using tasks built from convex-hull estimation and constrained path tracing with automated scoring.</p>
-            <div class="tag-row">
-              <span class="tag">Healthcare</span>
-              <span class="tag">Visuospatial</span>
-              <span class="tag">Automated Scoring</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Recent writing</p>
-            <h2>Notes, posts, and research-adjacent writing</h2>
-          </div>
-        </div>
-        <div class="writing-list">
-          <article class="writing-card">
-            <p class="writing-card__date">January 01, 2199</p>
-            <h3><a href="/posts/2012/08/blog-post-4/">Future Blog Post</a></h3>
-            <p class="writing-card__excerpt">This post will show up by default. To disable scheduling of future posts, edit config.yml and set future: false.</p>
-            <a class="inline-link" href="/posts/2012/08/blog-post-4/">Read post →</a>
-          </article>
-          <article class="writing-card">
-            <p class="writing-card__date">August 14, 2015</p>
-            <h3><a href="/posts/2012/08/blog-post-4/">Blog Post number 4</a></h3>
-            <p class="writing-card__excerpt">This is a sample blog post. Lorem ipsum I can’t remember the rest of lorem ipsum and don’t have an internet connection right now. Testing testing testing this blog post. Blog po...</p>
-            <a class="inline-link" href="/posts/2012/08/blog-post-4/">Read post →</a>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="shell site-footer__inner">
-      <p>Ravulapalli Manas Venkata Sai</p>
-      <p><a href="mailto:rmanasofficial@gmail.com">Email</a> · <a href="https://github.com/RavulapalliManas">GitHub</a> · <a href="https://www.linkedin.com/in/manas-ravulapalli-386433220/">LinkedIn</a> · <a href="feed.xml">RSS</a></p>
     </div>
-  </footer>
-</body>
-</html>
+    <div class="card-grid card-grid--interests">
+      <article class="card">
+        <h3>Structure in learned representations</h3>
+        <p>What a predictive network can and cannot represent, given only egocentric observations. The quotient law predicts when place fields should repeat across identical rooms, and map quality degrades monotonically with the order of the landmark symmetry group.</p>
+      </article>
+      <article class="card">
+        <h3>Developmental pretraining</h3>
+        <p>When representational structure becomes usable during training. Acquisition, retention, loss, and repair of a capability in continued pretraining, tested under a preregistration protocol with predictions filed before launch.</p>
+      </article>
+      <article class="card">
+        <h3>Mechanistic interpretability</h3>
+        <p>The gap between what a model represents and what it uses at query time. In-context binding failures localise to query-time attention routing, while the correct binding stays decodable and causally effective.</p>
+      </article>
+    </div>
+  </div>
+</section>
