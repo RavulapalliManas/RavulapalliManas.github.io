@@ -1,97 +1,105 @@
 ---
-title: "A warm-up game with actions helps a small language model, but not enough to pay for itself"
+title: "A short grid game helps a language model learn English, but does not pay for itself"
 date: 2026-10-02 15:30:00 +0530
-description: "A short warm-up game in which a small language model moves around a grid helps it learn English slightly, and only when it can see its own moves. At the dose I tested, the warm-up does not pay for itself."
+description: "Before training a small language model on English, I had it play a grid game. Seeing its own moves helped it learn English a little, but the game cost more training than it saved."
 tags: [language models, pre-pretraining, synthetic data]
 ---
 
-I gave a small language model a short game to play before it read any English. In the game, the model moves around a grid and has to remember what it saw at each spot. When the model could see its own moves, it later learned English slightly better than a model with no warm-up. When the moves were hidden, it learned English worse. The gain is real and repeats across seeds. It is also too small: at the dose I tested, spending the same tokens on English would have done more good.
+**In short**
+
+- Before training a small language model on English, I had it play a simple game: walk around a grid and remember what it saw.
+- When the model could see its own moves, it later learned English a little better. When the moves were hidden, it learned English worse.
+- The gain was consistent across runs, but small. The game cost more training than it saved.
 
 ## Why try this
 
-Training a language model costs tokens. One way to cut that cost is a short warm-up on synthetic data before the real training starts. Hu et al. (2025) warmed up a 1B model on a formal language of matching brackets and reached the same loss with 33% fewer tokens. Lee et al. (2026) warmed up models on neural cellular automata and reported up to 1.6x faster convergence.
+Language models are expensive because they learn from enormous amounts of text. One way to save some of that text is a short warm-up on made-up data before the real training starts. Earlier work found that this can help. Hu et al. (2025) warmed up a 1B-parameter model on a simple formal language of matching brackets. It reached the same loss, a standard measure of how well a model predicts text, with 33% fewer tokens. Lee et al. (2026) warmed up models on patterns from cellular automata and reported up to 1.6 times faster convergence.
 
-In both cases the model watches structure go by. It never acts. Language often asks for something else: keep track of things as they change, and look up a fact by where or when you saw it. A model of the hippocampus called the Tolman-Eichenbaum Machine (Whittington et al., 2020) splits this into two parts. One part learns the structure of a space. The other links that structure to what is seen there.
+In those warm-ups the model only watches patterns go by. It never acts. Much of language is about keeping track of things that change, such as who has what, or what was said a few sentences ago.
 
-So the question was simple. If the warm-up has actions that move through freshly labelled content, does the model learn English faster? And if it does, is it the actions that help?
+In the brain, one region, the hippocampal formation, supports both finding your way through space and remembering how things relate. A model of that region, the Tolman-Eichenbaum Machine (Whittington et al., 2020), splits the job in two. One part learns the layout of a space. The other ties that layout to what is seen in it.
+
+That suggested a simple experiment. Give a language model a warm-up in which it moves through a world and has to keep track of where it is. Then ask two questions. Does the warm-up make English cheaper to learn? And if it does, is it the moves that help?
 
 ## The game
 
 ![The game](/images/posts/action-warmup/fig0_game.png)
 
-*The game, simplified. Real games use grids from 4 x 4 to 12 x 12 and 256 possible labels.*
+*A simplified example. The real games use grids from 4 x 4 to 12 x 12 and 256 possible labels.*
 
-Each game takes place in a small grid whose edges wrap around. Every spot gets a random label, and the labels are reshuffled at the start of every game, so the model cannot memorise them. The game is written as text: a label, a move, a label, a move, and so on.
+Each game takes place on a small grid whose edges wrap around. Every square gets a random label, and the labels change every game, so nothing can be memorised. The game is written as text: a label, a move, the next label, the next move, and so on.
 
-The model is graded only on predicting the labels. The label at a new spot cannot be predicted. The label at a spot the model has visited before can be predicted, but only if the model does two things. It has to work out where it is by adding up its moves, and it has to recall the label it saw there earlier.
+The model is scored only on predicting the labels. It cannot predict the label of a square it has never visited. It can predict the label of a square it has visited before, but only by working out where it is from its moves and recalling what it saw there.
 
-The key control hides the moves. Every move becomes the same blank token, and everything else stays identical. If the warm-up helps only when the moves are visible, the moves are doing the work.
+The control version hides the moves. Every move becomes the same blank token, and nothing else changes. If only the version with visible moves helps, the moves are what matter.
 
-## The setup
+## The experiment
 
-Every run trained the same 51M-parameter transformer. A run had two stages:
+Every run used the same small language model, with 51M parameters. Each run had two stages:
 
-1. A warm-up of 100M tokens of synthetic data, or no warm-up.
-2. 500M tokens of English web text (FineWeb-Edu), identical in every run.
+1. An optional warm-up of 100M tokens.
+2. 500M tokens of English web text (FineWeb-Edu), the same English in every run.
 
 I compared five warm-ups against no warm-up:
 
-| | Warm-up |
+| | Warm-up before English |
 |---|---|
 | A | None |
-| B | Matching brackets (k-Shuffle Dyck), using Hu et al.'s generator |
-| C | The grid game with the moves hidden |
-| D | The grid game with the moves shown |
-| E | The grid game with walks built from small loops |
-| R | The grid game's format filled with random labels |
+| B | Matching brackets, the formal language used by Hu et al. |
+| C | The grid game, moves hidden |
+| D | The grid game, moves shown |
+| E | The grid game, with walks made of small loops |
+| R | The grid game's layout filled with random labels, so there is nothing to learn |
 
-Each condition ran with 3 random seeds. I also trained the no-warm-up model on 300M, 400M, 650M and 800M English tokens. Those runs give a ruler: any final loss can be converted into "how much English the plain model needs to reach it". I wrote down the predictions before the runs started.
+I trained each setting three times, from different random starting points. I also trained the model with no warm-up on more and less English, from 300M to 800M tokens. That gives a yardstick: for any result, I can ask how much English the plain model needs to match it.
 
-All 25 runs fit on one rented GPU (an NVIDIA L40S) in about 18 hours, for about $46.
+I wrote down my predictions before running anything. All 25 runs took about 18 hours on one rented GPU and cost about $46.
 
-## The actions matter
+## Result 1: the moves matter
 
 ![Final loss relative to no warm-up](/images/posts/action-warmup/fig1_loss.png)
 
-The game with visible moves (D) is the only warm-up that clearly beat no warm-up. Its final loss was 0.021 nats lower on average, and it was lower in all three seeds. The same game with hidden moves (C) finished 0.025 nats higher than no warm-up. Loop-heavy walks (E) came out level on average, with one good seed and two bad ones.
+The score here is validation loss: how well the model predicts English it has never seen. Lower is better.
 
-The gap between them is the cleanest result in the study. D beat C by 0.047, 0.047 and 0.045 nats in the three seeds. The only difference between the two is whether the moves were visible.
+The game with visible moves (D) is the only warm-up that clearly beat no warm-up. It came out ahead in all three runs, by 0.021 on average. The same game with hidden moves (C) made the model worse, by 0.025 on average. Loop-heavy walks (E) came out level on average.
 
-## The warm-up does not pay for itself
+The gap between D and C is the clearest result. D beat C in every run, by 0.045 to 0.047. The only thing that separates them is whether the moves were visible.
+
+## Result 2: the game does not pay for itself
 
 ![Does the warm-up pay](/images/posts/action-warmup/fig2_pay.png)
 
-A lower loss is not enough. The warm-up costs tokens too, so the fair question is whether the same tokens would have done more good as English.
+The game also costs training. The fair test is whether the same tokens would have done more good as English.
 
-They would have. The game with moves cost 100M warm-up tokens plus 500M English tokens. The plain model reaches the same loss after 517M to 529M English tokens. So the 100M game tokens were worth only 18M to 29M English tokens. Measured against each seed's own no-warm-up run, the figure is 28M to 45M. Either way it is far short of 100M. On average, every other warm-up did worse.
+They would have. The model that played the game spent 100M tokens on the game and 500M on English. The plain model matches it after 517M to 529M tokens of English alone. So the 100M game tokens were worth only 18M to 29M tokens of English. Measured against each run's own no-warm-up partner, the figure is 28M to 45M. Either way, it falls well short of 100M. On average, every other warm-up did worse.
 
-A smaller dose looks better. A 30M-token game with moves kept most of the benefit and landed almost exactly on the break-even line. Its 30M game tokens were worth about 21M English tokens. That comes from a single seed, so it is a lead and not a result.
+A shorter game looks better. With 30M game tokens, the model kept most of the gain and landed almost exactly at break-even. Its 30M game tokens were worth about 21M tokens of English. That comes from a single run, so treat it as a hint.
 
-## The model keeps using what the game built
+## Result 3: the model reuses what the game built
 
 ![Head ablation](/images/posts/action-warmup/fig3_heads.png)
 
-During the game, some attention heads learn to look back from a revisit to the earlier visit of the same spot. I found the four strongest such heads at the end of the game. Then I switched them off in the finished model, after all the English training.
+During the game, some attention heads, the parts of the model that decide where to look, learn to look back at the earlier visit to the same square. I found the four strongest of these heads and switched them off in the finished model, after all its English training.
 
-In two of three seeds, this hurt the model's English more than switching off any of 20 random sets of four heads. Recall of facts given earlier in a prompt dropped by 5.6 and 9.8 percentage points. The in-context learning score also got worse, though that score is noisy at this model size. The same four heads in the no-warm-up model mattered less. In the third seed, the selected heads were no different from random ones.
+In two of the three runs, this hurt the model's English more than switching off any of 20 random sets of four heads. Its recall of facts given earlier in a prompt dropped by 5.6 and 9.8 percentage points. A noisier measure of learning from context also got worse. The same four heads mattered less in the model that never played the game. In the third run, the chosen heads behaved like random ones.
 
-So in two of three seeds, heads built for the game still did work in language.
+So in two of three runs, parts of the model built for the game were still doing useful work in language.
 
-## What did not work
+## Surprises
 
-**Loop-heavy walks (E) transferred worse than plain random walks.** E scored higher on its own game, yet two of its three seeds ended up worse at English than no warm-up. The third seed matched the random-walk game.
+Loop-heavy walks (E) did worse than plain random walks. E scored higher on its own game, yet two of its three runs ended up worse at English than no warm-up.
 
-**Matching brackets (B) were the worst structured warm-up.** This does not contradict Hu et al. My setup differed from theirs in three ways: a smaller model, a new embedding table after the warm-up, and a shorter context. A 30M-token bracket warm-up did no better than the 100M one.
+Matching brackets (B) did worst of the structured warm-ups. This does not contradict Hu et al., because my setup differs from theirs: a smaller model, a fresh vocabulary table after the warm-up, and shorter inputs. A 30M-token bracket warm-up did no better.
 
-**Random labels (R) did damage.** A warm-up with nothing to learn raised the final loss by 0.26 to 0.34 nats. Those models largely failed to form induction heads during English training, the circuits that copy patterns from earlier in the text. I have not tested why.
+A warm-up with nothing to learn (R) did real damage: its loss was 0.26 to 0.34 higher. These models mostly failed to form induction heads, the circuits a model uses to copy patterns from earlier in the text. I have not tested why.
 
 ## Limits
 
-This is a small study. The model has 51M parameters, and the dose test has one seed per point. The grammar test could not tell the five main conditions apart. On in-context learning, the plain model came out slightly ahead of D, the opposite of what I predicted. All of the gains I measured are fractions of a percent of the total loss.
+The model is small, and the shorter-game test was run once. The grammar test could not tell the five main settings apart. On the measure of learning from context, the plain model came out slightly ahead of D, the opposite of what I predicted. Every improvement in loss I measured is under 1% of the total loss.
 
-## What I would do next
+## Next
 
-The next step is a dose sweep of the action game at 10M, 20M, 30M and 50M tokens, with three seeds each. That is about 9 GPU-hours, or about $23 on the same hardware. If a small dose gives a real net saving, the idea is worth testing on a larger model.
+The next step is to test shorter games: 10M, 20M, 30M and 50M tokens, three runs each. That is about 9 GPU-hours, or about $23. If a short game gives a real saving, it is worth trying on a larger model.
 
 ## References
 
@@ -99,4 +107,3 @@ The next step is a dose sweep of the action game at 10M, 20M, 30M and 50M tokens
 - Lee, Han, Kumar and Agrawal. *Training Language Models via Neural Cellular Automata.* 2026. [arXiv:2603.10055](https://arxiv.org/abs/2603.10055)
 - Whittington, Muller, Mark, Chen, Barry, Burgess and Behrens. *The Tolman-Eichenbaum Machine: Unifying Space and Relational Memory through Generalization in the Hippocampal Formation.* Cell 183(5), 2020. [doi:10.1016/j.cell.2020.10.024](https://doi.org/10.1016/j.cell.2020.10.024)
 - Olsson et al. *In-context Learning and Induction Heads.* Transformer Circuits Thread, 2022. [link](https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html)
-
