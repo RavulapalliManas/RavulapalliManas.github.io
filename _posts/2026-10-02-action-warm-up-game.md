@@ -1,29 +1,25 @@
 ---
-title: "A short grid game helps a language model learn English, but does not pay for itself"
+title: "A short grid game helps a language model learn English, but it doesn't pay for itself"
 date: 2026-10-02 15:30:00 +0530
 description: "Animals learn the structure of the world by acting in it. I gave a small language model a grid game with moves before it read English. Seeing its own moves helped a little, but the game cost more training than it saved."
 tags: [language models, pre-pretraining, neuroscience]
 ---
 
-**In short**
+**In short:** Before training a small language model on English, I had it play a simple game: wander around a grid and remember what it saw. When the model could see its own moves, it went on to learn English a little better than a model that skipped the game. When the moves were hidden, it learned English worse. The effect showed up in every run, but it was small, and the game cost more training than it saved.
 
-- Before training a small language model on English, I had it play a simple game: walk around a grid and remember what it saw.
-- When the model could see its own moves, it later learned English a little better. When the moves were hidden, it learned English worse.
-- The gain was consistent across runs, but small. The game cost more training than it saved.
+## Why a game with moves?
 
-## Why try this
+Animals learn about the world by acting on it and watching what changes. The classic demonstration is an experiment by Held and Hein (1963). They raised pairs of kittens in the dark and let them see only inside a striped drum. One kitten in each pair walked around, turning a small carousel; its partner rode in a basket on the same carousel and was moved in exactly the same way, so the two saw the same sights. Only the kittens that walked learned to use their eyes to guide their paws and to avoid a visual drop.
 
-Animals learn about the world by acting on it and seeing what changes. In a classic experiment, Held and Hein (1963) raised pairs of kittens in the dark and let them see only inside a striped drum. One kitten in each pair walked and turned a small carousel. Its partner rode in a basket on the same carousel and was moved in exactly the same way, so both saw the same sights. Only the walking kittens learned to use sight to guide their paws and to avoid a visual drop.
+There are some simple reasons why acting helps. If you cause a change, you know where it came from, and every action you choose is a small experiment. Movement also follows rules that make a world easy to map. Going north and then east puts you in the same place as going east and then north. A step south undoes a step north, and a walk around the block brings you back where you started. Rules like these are what turn a pile of separate observations into a map. Machine-learning theory points the same way: Caselles-Dupré and colleagues (2019) argue that a learner can't discover the symmetries of its world from still snapshots, and has to interact with it.
 
-Acting helps for simple reasons. When you cause a change, you know where it came from. When you choose an action, you run a small experiment. Actions also follow rules that make a world easy to map. A step north and then east lands you where a step east and then north does. A step north is undone by a step south. A walk around a block brings you back to the start. Rules like these turn a pile of separate observations into a map. Machine-learning theory makes a similar point: Caselles-Dupré et al. (2019) argue that a learner cannot discover the symmetries of its world from still snapshots alone, and has to interact with it.
+The brain seems to reuse this machinery for abstract thought. The hippocampal formation supports both finding your way through space and remembering how things relate to each other. The Tolman-Eichenbaum Machine (Whittington et al., 2020), a model of this region, keeps knowledge of structure separate from what is actually seen, and that structural knowledge carries over from one environment to the next. And when people navigate a space of abstract ideas, their brains show the same grid-like signal they show when navigating a real space (Constantinescu, O'Reilly and Behrens, 2016).
 
-The brain seems to reuse this machinery for abstract thought. The hippocampal formation supports both finding your way through space and remembering how things relate. A model of that region, the Tolman-Eichenbaum Machine (Whittington et al., 2020), keeps knowledge of structure separate from what is seen, and that structural knowledge carries over from one environment to the next. People who navigate a space of abstract ideas show the same grid-like brain signal as people who navigate a real space (Constantinescu, O'Reilly and Behrens, 2016).
+Language models learn from text alone, and text is passive. Language still asks for the same skills, though: keeping track of who has what, or of what someone said a few sentences back. A language model doesn't have a body, but it can still be shown the structure that actions bring, as a written record of moves and what they led to.
 
-Language models learn from text alone, and text is passive. Yet language needs the same skills: keeping track of who has what, or of what was said a few sentences ago. A model has no body, but it can still get the structure that actions bring, as a record of moves and what they led to.
+There's a practical reason to try this too. Language models are expensive because they need enormous amounts of text, and one way to save some of it is a short warm-up on made-up data before the real training starts. Earlier warm-ups have worked. Hu et al. (2025) warmed up a 1B-parameter model on a simple formal language of matching brackets, and it reached the same loss (a standard measure of how well a model predicts text) with 33% fewer tokens. Lee et al. (2026) used patterns from cellular automata and reported up to 1.6 times faster convergence. In both cases, though, the model only watches patterns go by. It never acts.
 
-There is also a practical reason to try. Language models are expensive because they learn from enormous amounts of text. One way to save some of that text is a short warm-up on made-up data before the real training. Earlier warm-ups helped. Hu et al. (2025) warmed up a 1B-parameter model on a simple formal language of matching brackets. It reached the same loss, a standard measure of how well a model predicts text, with 33% fewer tokens. Lee et al. (2026) warmed up models on patterns from cellular automata and reported up to 1.6 times faster convergence. In both cases the model only watches patterns go by. It never acts.
-
-So I built a warm-up in which the model moves through a world and has to keep track of where it is. Then I asked two questions. Does the warm-up make English cheaper to learn? And if it does, is it the moves that help?
+So I built a warm-up in which the model moves through a world and has to keep track of where it is, and asked two questions. Does the warm-up make English cheaper to learn? And if it does, is it the moves that help?
 
 ## The game
 
@@ -31,20 +27,17 @@ So I built a warm-up in which the model moves through a world and has to keep tr
 
 *A simplified example. The real games use grids from 4 x 4 to 12 x 12 and 256 possible labels.*
 
-Each game takes place on a small grid whose edges wrap around. Every square gets a random label, and the labels change every game, so nothing can be memorised. The game is written as text: a label, a move, the next label, the next move, and so on.
+Each game takes place on a small grid whose edges wrap around. Every square gets a random label, and the labels are reshuffled for every game, so there's nothing to memorise. The game is written out as text: a label, a move, the next label, the next move, and so on.
 
-The model is scored only on predicting the labels. It cannot predict the label of a square it has never visited. It can predict the label of a square it has visited before, but only by working out where it is from its moves and recalling what it saw there.
+The model is only scored on predicting the labels. There's no way to guess the label of a square it hasn't visited yet. For a square it has visited, the label is predictable, but only if the model works out where it is from its moves and remembers what it saw there.
 
-The control version hides the moves. Every move becomes the same blank token, and nothing else changes. If only the version with visible moves helps, the moves are what matter.
+In the control version, the moves are hidden: every move becomes the same blank token, and nothing else changes. If the game only helps when the moves are visible, then it's the moves doing the work.
 
-## The experiment
+## What I ran
 
-Every run used the same small language model, with 51M parameters. Each run had two stages:
+Every run used the same small language model, with 51M parameters, trained in two stages: an optional 100M-token warm-up, followed by 500M tokens of English web text (FineWeb-Edu). The English was identical across runs.
 
-1. An optional warm-up of 100M tokens.
-2. 500M tokens of English web text (FineWeb-Edu), the same English in every run.
-
-I compared five warm-ups against no warm-up:
+I compared five warm-ups against no warm-up at all:
 
 | | Warm-up before English |
 |---|---|
@@ -55,55 +48,55 @@ I compared five warm-ups against no warm-up:
 | E | The grid game, with walks made of small loops |
 | R | The grid game's layout filled with random labels, so there is nothing to learn |
 
-I trained each setting three times, from different random starting points. I also trained the model with no warm-up on more and less English, from 300M to 800M tokens. That gives a yardstick: for any result, I can ask how much English the plain model needs to match it.
+Each setting was trained three times from different random starting points. I also trained the no-warm-up model on more and less English, from 300M up to 800M tokens, which gives a yardstick: for any result, I can ask how much English the plain model would need to match it.
 
-I wrote down my predictions before running anything. All 25 runs took about 18 hours on one rented GPU and cost about $46.
+I wrote my predictions down before running anything. All 25 runs fit on a single rented GPU in about 18 hours, for about $46.
 
-## Result 1: the moves matter
+## Seeing the moves matters
 
 ![Final loss relative to no warm-up](/images/posts/action-warmup/fig1_loss.png)
 
-The score here is validation loss: how well the model predicts English it has never seen. Lower is better.
+The score here is validation loss, which measures how well the model predicts English it hasn't seen before. Lower is better.
 
-The game with visible moves (D) is the only warm-up that clearly beat no warm-up. It came out ahead in all three runs, by 0.021 on average. The same game with hidden moves (C) made the model worse, by 0.025 on average. Loop-heavy walks (E) came out level on average.
+The game with visible moves (D) was the only warm-up that clearly beat skipping the warm-up. It came out ahead in all three runs, by 0.021 on average. The same game with the moves hidden (C) made things worse, by 0.025 on average, and the loop-heavy walks (E) came out about level.
 
-The gap between D and C is the clearest result. D beat C in every run, by 0.045 to 0.047. The only thing that separates them is whether the moves were visible.
+The gap between D and C is the cleanest result in the study. D beat C in every run, by 0.045 to 0.047, and the only difference between them is whether the model could see its moves.
 
-## Result 2: the game does not pay for itself
+## But it doesn't pay for itself
 
 ![Does the warm-up pay](/images/posts/action-warmup/fig2_pay.png)
 
-The game also costs training. The fair test is whether the same tokens would have done more good as English.
+The game isn't free. Those warm-up tokens cost training too, so the fair question is whether they would have done more good as English.
 
-They would have. The model that played the game spent 100M tokens on the game and 500M on English. The plain model matches it after 517M to 529M tokens of English alone. So the 100M game tokens were worth only 18M to 29M tokens of English. Measured against each run's own no-warm-up partner, the figure is 28M to 45M. Either way, it falls well short of 100M. On average, every other warm-up did worse.
+They would have. The model that played the game spent 100M tokens on the game and 500M on English, and the plain model matches it after 517M to 529M tokens of English alone. So the 100M game tokens were worth only 18M to 29M tokens of English. (Compared against each run's own no-warm-up partner, it's 28M to 45M. Either way, it's well short of 100M.) On average, every other warm-up did worse.
 
-A shorter game looks better. With 30M game tokens, the model kept most of the gain and landed almost exactly at break-even. Its 30M game tokens were worth about 21M tokens of English. That comes from a single run, so treat it as a hint.
+A shorter game looks more promising. With just 30M game tokens, the model kept most of the gain and landed almost exactly at break-even: those 30M tokens were worth about 21M tokens of English. That's from a single run, so I'd treat it as a hint for now.
 
-## Result 3: the model reuses what the game built
+## The model keeps what the game built
 
 ![Head ablation](/images/posts/action-warmup/fig3_heads.png)
 
-During the game, some attention heads, the parts of the model that decide where to look, learn to look back at the earlier visit to the same square. I found the four strongest of these heads and switched them off in the finished model, after all its English training.
+During the game, some of the model's attention heads (the parts that decide where in the text to look) learn to look back at the earlier visit to the same square. I picked out the four strongest of these heads and switched them off in the finished model, after all of its English training.
 
-In two of the three runs, this hurt the model's English more than switching off any of 20 random sets of four heads. Its recall of facts given earlier in a prompt dropped by 5.6 and 9.8 percentage points. A noisier measure of learning from context also got worse. The same four heads mattered less in the model that never played the game. In the third run, the chosen heads behaved like random ones.
+In two of the three runs, this hurt the model's English more than switching off any of 20 random sets of four heads. Its recall of facts given earlier in a prompt dropped by 5.6 and 9.8 percentage points, and a noisier measure of learning from context got worse too. The same four heads mattered less in a model that never played the game. In the third run, though, the chosen heads behaved like random ones.
 
-So in two of three runs, parts of the model built for the game were still doing useful work in language.
+So in two of three runs, parts of the model that were built for the game were still doing useful work in language.
 
-## Surprises
+## What surprised me
 
-Loop-heavy walks (E) did worse than plain random walks. E scored higher on its own game, yet two of its three runs ended up worse at English than no warm-up.
+The loop-heavy walks (E) did worse than plain random walks. E scored higher on its own game, yet two of its three runs ended up worse at English than no warm-up at all.
 
-Matching brackets (B) did worst of the structured warm-ups. This does not contradict Hu et al., because my setup differs from theirs: a smaller model, a fresh vocabulary table after the warm-up, and shorter inputs. A 30M-token bracket warm-up did no better.
+Matching brackets (B) did the worst of the structured warm-ups. That doesn't contradict Hu et al., because my setup was different from theirs: a smaller model, a fresh vocabulary table after the warm-up, and shorter inputs. A 30M-token bracket warm-up didn't do any better.
 
-A warm-up with nothing to learn (R) did real damage: its loss was 0.26 to 0.34 higher. These models mostly failed to form induction heads, the circuits a model uses to copy patterns from earlier in the text. I have not tested why.
+A warm-up with nothing to learn (R) did real damage, raising the loss by 0.26 to 0.34. These models mostly failed to develop induction heads, the circuits a model uses to copy patterns from earlier in the text. I haven't tested why.
 
-## Limits
+## Caveats
 
-The model is small, and the shorter-game test was run once. The grammar test could not tell the five main settings apart. On the measure of learning from context, the plain model came out slightly ahead of D, the opposite of what I predicted. Every improvement in loss I measured is under 1% of the total loss.
+This is a small model, and the shorter-game test was run only once. The grammar test couldn't tell the five main settings apart, and on the measure of learning from context, the plain model came out slightly ahead of D, the opposite of what I predicted. Every improvement in loss I measured is under 1% of the total loss.
 
-## Next
+## What's next
 
-The next step is to test shorter games: 10M, 20M, 30M and 50M tokens, three runs each. That is about 9 GPU-hours, or about $23. If a short game gives a real saving, it is worth trying on a larger model.
+The obvious next step is to try shorter games, at 10M, 20M, 30M and 50M tokens with three runs each. That's about 9 GPU-hours, or roughly $23. If a short game gives a real saving, it'll be worth trying on a larger model.
 
 ## References
 
