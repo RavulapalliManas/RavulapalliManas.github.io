@@ -1,8 +1,8 @@
 ---
 title: "A short grid game helps a language model learn English, but does not pay for itself"
 date: 2026-10-02 15:30:00 +0530
-description: "Before training a small language model on English, I had it play a grid game. Seeing its own moves helped it learn English a little, but the game cost more training than it saved."
-tags: [language models, pre-pretraining, synthetic data]
+description: "Animals learn the structure of the world by acting in it. I gave a small language model a grid game with moves before it read English. Seeing its own moves helped a little, but the game cost more training than it saved."
+tags: [language models, pre-pretraining, neuroscience]
 ---
 
 **In short**
@@ -13,13 +13,17 @@ tags: [language models, pre-pretraining, synthetic data]
 
 ## Why try this
 
-Language models are expensive because they learn from enormous amounts of text. One way to save some of that text is a short warm-up on made-up data before the real training starts. Earlier work found that this can help. Hu et al. (2025) warmed up a 1B-parameter model on a simple formal language of matching brackets. It reached the same loss, a standard measure of how well a model predicts text, with 33% fewer tokens. Lee et al. (2026) warmed up models on patterns from cellular automata and reported up to 1.6 times faster convergence.
+Animals learn about the world by acting on it and seeing what changes. In a classic experiment, Held and Hein (1963) raised pairs of kittens in the dark and let them see only inside a striped drum. One kitten in each pair walked and turned a small carousel. Its partner rode in a basket on the same carousel and was moved in exactly the same way, so both saw the same sights. Only the walking kittens learned to use sight to guide their paws and to avoid a visual drop.
 
-In those warm-ups the model only watches patterns go by. It never acts. Much of language is about keeping track of things that change, such as who has what, or what was said a few sentences ago.
+Acting helps for simple reasons. When you cause a change, you know where it came from. When you choose an action, you run a small experiment. Actions also follow rules that make a world easy to map. A step north and then east lands you where a step east and then north does. A step north is undone by a step south. A walk around a block brings you back to the start. Rules like these turn a pile of separate observations into a map. Machine-learning theory makes a similar point: Caselles-Dupré et al. (2019) argue that a learner cannot discover the symmetries of its world from still snapshots alone, and has to interact with it.
 
-In the brain, one region, the hippocampal formation, supports both finding your way through space and remembering how things relate. A model of that region, the Tolman-Eichenbaum Machine (Whittington et al., 2020), splits the job in two. One part learns the layout of a space. The other ties that layout to what is seen in it.
+The brain seems to reuse this machinery for abstract thought. The hippocampal formation supports both finding your way through space and remembering how things relate. A model of that region, the Tolman-Eichenbaum Machine (Whittington et al., 2020), keeps knowledge of structure separate from what is seen, and that structural knowledge carries over from one environment to the next. People who navigate a space of abstract ideas show the same grid-like brain signal as people who navigate a real space (Constantinescu, O'Reilly and Behrens, 2016).
 
-That suggested a simple experiment. Give a language model a warm-up in which it moves through a world and has to keep track of where it is. Then ask two questions. Does the warm-up make English cheaper to learn? And if it does, is it the moves that help?
+Language models learn from text alone, and text is passive. Yet language needs the same skills: keeping track of who has what, or of what was said a few sentences ago. A model has no body, but it can still get the structure that actions bring, as a record of moves and what they led to.
+
+There is also a practical reason to try. Language models are expensive because they learn from enormous amounts of text. One way to save some of that text is a short warm-up on made-up data before the real training. Earlier warm-ups helped. Hu et al. (2025) warmed up a 1B-parameter model on a simple formal language of matching brackets. It reached the same loss, a standard measure of how well a model predicts text, with 33% fewer tokens. Lee et al. (2026) warmed up models on patterns from cellular automata and reported up to 1.6 times faster convergence. In both cases the model only watches patterns go by. It never acts.
+
+So I built a warm-up in which the model moves through a world and has to keep track of where it is. Then I asked two questions. Does the warm-up make English cheaper to learn? And if it does, is it the moves that help?
 
 ## The game
 
@@ -103,6 +107,9 @@ The next step is to test shorter games: 10M, 20M, 30M and 50M tokens, three runs
 
 ## References
 
+- Held and Hein. *Movement-produced stimulation in the development of visually guided behavior.* Journal of Comparative and Physiological Psychology 56(5), 1963. [doi:10.1037/h0040546](https://doi.org/10.1037/h0040546)
+- Caselles-Dupré, Garcia-Ortiz and Filliat. *Symmetry-Based Disentangled Representation Learning requires Interaction with Environments.* NeurIPS 2019. [arXiv:1904.00243](https://arxiv.org/abs/1904.00243)
+- Constantinescu, O'Reilly and Behrens. *Organizing conceptual knowledge in humans with a gridlike code.* Science 352(6292), 2016. [doi:10.1126/science.aaf0941](https://doi.org/10.1126/science.aaf0941)
 - Hu, Petty, Shi, Merrill and Linzen. *Between Circuits and Chomsky: Pre-pretraining on Formal Languages Imparts Linguistic Biases.* ACL 2025. [arXiv:2502.19249](https://arxiv.org/abs/2502.19249)
 - Lee, Han, Kumar and Agrawal. *Training Language Models via Neural Cellular Automata.* 2026. [arXiv:2603.10055](https://arxiv.org/abs/2603.10055)
 - Whittington, Muller, Mark, Chen, Barry, Burgess and Behrens. *The Tolman-Eichenbaum Machine: Unifying Space and Relational Memory through Generalization in the Hippocampal Formation.* Cell 183(5), 2020. [doi:10.1016/j.cell.2020.10.024](https://doi.org/10.1016/j.cell.2020.10.024)
