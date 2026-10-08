@@ -1,7 +1,7 @@
 # Site
 title            : "Ravulapalli Manas Venkata Sai"
 brand            : "Manas Ravulapalli"
-description      : "Computational and theoretical neuroscience: how neural systems build structured internal models of the world, and the same question in artificial systems."
+description      : "Manas Ravulapalli. I study how brains and neural networks learn maps of the world, and how language models gain and lose skills during training."
 url              : "https://ravulapallimanas.github.io"
 baseurl          : ""
 repository       : "RavulapalliManas/RavulapalliManas.github.io"
@@ -18,12 +18,8 @@ author:
   linkedin       : "https://www.linkedin.com/in/manas-ravulapalli-386433220/"
 
 navigation:
-  - { key: about,       title: "About",       url: "/about/" }
   - { key: research,    title: "Research",    url: "/research/" }
-  - { key: projects,    title: "Projects",    url: "/projects/" }
-  - { key: teaching,    title: "Teaching",    url: "/teaching/" }
   - { key: writing,     title: "Writing",     url: "/writing/" }
-  - { key: photography, title: "Photography", url: "/photography/" }
   - { key: cv,          title: "CV",          url: "/cv/" }
 
 # Build
@@ -39,6 +35,7 @@ excerpt_separator: "\n\n"
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+  - jekyll-redirect-from
 
 feed:
   path: feed.xml
@@ -68,27 +65,24 @@ defaults:
     values:
       layout     : entry
       nav        : research
-      eyebrow    : "Paper or manuscript"
       back_url   : "/research/"
-      back_title : "All research"
+      back_title : "Research"
   - scope:
       path       : ""
       type       : portfolio
     values:
       layout     : entry
       nav        : projects
-      eyebrow    : "Project"
-      back_url   : "/projects/"
-      back_title : "All projects"
+      back_url   : "/research/#projects"
+      back_title : "Research"
   - scope:
       path       : ""
       type       : teaching
     values:
       layout     : entry
       nav        : teaching
-      eyebrow    : "Teaching"
-      back_url   : "/teaching/"
-      back_title : "All teaching"
+      back_url   : "/cv/#teaching"
+      back_title : "CV"
 
 include:
   - files

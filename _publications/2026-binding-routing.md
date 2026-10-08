@@ -3,19 +3,16 @@ title: "Visible but out-voted: in-context binding failures are query-time routin
 date: 2026-07-01
 order: 3
 authors: "Ravulapalli, M., et al."
-meta: "Ravulapalli, M., et al."
 status: "In preparation."
-excerpt: "When a language model emits the wrong in-context binding, the correct binding is still decodable and still causally effective. The failure is in routing, not in representation."
-tags:
-  - Interpretability
-  - In-context learning
-  - Attention routing
-  - Pythia
+excerpt: "When a language model links the wrong facts together from its prompt, the right link is still stored inside the model. The mistake happens when the model reads the answer out."
 ---
 
-When a language model emits the wrong in-context binding, the correct binding
-remains decodable and causally effective. The failure localises to query-time
-attention routing and later-layer overwrite.
+Give a language model a prompt such as "the box holds the key, the bag holds the
+coin", then ask what the bag holds. Sometimes it answers wrong. This is called a
+binding error.
 
-A developmental analysis over 70 pretraining checkpoints, across Pythia and
-OLMo-2, shows that representation and use develop on different clocks.
+We find that when the model makes this error, the correct link is still stored
+inside it and can still be read out. The failure happens later, when the model
+pulls the answer out of its memory of the prompt. We also follow this across
+training, using public checkpoints of Pythia and OLMo-2, and find that storing
+the link and using it develop at different times.

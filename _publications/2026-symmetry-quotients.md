@@ -3,27 +3,20 @@ title: "Cognitive maps are symmetry quotients: why place fields repeat in identi
 date: 2026-09-01
 order: 1
 authors: "Ravulapalli, M."
-meta: "Ravulapalli, M. (2026). Single-author."
-status: "Extended abstract submitted to NeurReps 2026, a NeurIPS workshop. Full manuscript in preparation for bioRxiv."
-excerpt: "A predictive RNN trained on egocentric observations represents state space only up to the symmetry subgroup whose actions are indistinguishable from self-motion."
-tags:
-  - Predictive learning
-  - Cognitive maps
-  - Representational geometry
-  - RNN
+status: "Extended abstract submitted to NeurReps 2026, a NeurIPS workshop. Full paper in preparation."
+excerpt: "A network that learns a map by predicting what it will see next merges places it can't tell apart. This explains when place cells should repeat their firing across rooms that look the same."
 ---
 
-This is the thesis result. A predictive RNN trained on egocentric observations
-represents state space only up to the symmetry subgroup whose actions are
-indistinguishable from self-motion. The quotient law predicts when place fields
-should repeat across identical rooms.
+This is my undergraduate thesis, supervised by Prof. Debayan Gupta at Ashoka
+University.
 
-Four findings support it.
+An animal can learn a map of a space by predicting what it will see as it moves.
+I ask what such a map can and can't contain. My answer is that the network
+merges any places that look the same and that its own movements can't tell
+apart.
 
-- Map quality degrades monotonically with the order of the landmark symmetry
-  group, tested across `C1`, `C2`, and `C4`.
-- Unit-level aliasing dissociates from population-level structure.
-- Head-direction input is required for global map stability.
-- Offline replay co-emerges with the fold, at the same prediction horizon.
-
-The workshop version is framed around sensorimotor identifiability.
+Place cells in the hippocampus fire at specific places. In some experiments with
+several identical rooms, they repeat the same firing pattern in each room. The
+result above predicts when that repetition should happen. I test it with
+recurrent networks trained in simulated environments with different shapes and
+landmarks.

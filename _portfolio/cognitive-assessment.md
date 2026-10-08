@@ -1,17 +1,12 @@
 ---
-title: "Cognitive assessment platform for neurodegenerative disorders"
+title: "Cognitive tests for Alzheimer's disease"
 order: 3
-meta: "Digital assessment battery with automated scoring"
-excerpt: "A digital battery for attention, working memory, and motor deficits in Alzheimer's patients and controls."
-tags:
-  - Healthcare
-  - Visuospatial processing
-  - Automated scoring
+excerpt: "A set of digital tests for attention, working memory, and movement in people with Alzheimer's disease, scored automatically."
 ---
 
-A digital battery that measures attention, working memory, and motor deficits in
-Alzheimer's patients and in controls.
+A set of digital tests that measures attention, working memory, and movement in
+people with Alzheimer's disease and in healthy controls.
 
-The tasks probe visuospatial processing through convex hull estimation and
-constrained path tracing. Scoring is automated, and the platform logs results
-longitudinally so that change over time is measurable rather than inferred.
+Some tasks test spatial judgement, such as estimating the outline of a set of
+points or tracing a path. Scoring is automatic, and results
+are saved over time so that change can be measured.

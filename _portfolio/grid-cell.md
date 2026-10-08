@@ -1,18 +1,13 @@
 ---
-title: "Grid field distortion under reward modulation"
+title: "Reward and grid cells"
 order: 1
-meta: "Continuous attractor modelling and topological data analysis"
-excerpt: "Continuous attractor models of how reward gradients perturb grid fields, and what that does to the toroidal manifold of population activity."
-tags:
-  - CANN
-  - Reinforcement learning
-  - Persistent homology
-  - Topology
+excerpt: "A model of grid cells that asks whether reward bends the brain's spatial grid smoothly or breaks it."
 ---
 
-Continuous attractor models of how reward gradients perturb grid fields.
+Grid cells are neurons that fire at points on a regular triangular grid as an
+animal moves. In some experiments, the grid gets distorted near rewarded places.
 
-The analysis measures grid score, spacing, and orientation shifts under reward
-modulation, then uses persistent homology to characterise disruption of the
-toroidal population manifold. The question is whether a reward signal deforms
-the map continuously or breaks its topology.
+I model grid cells as a continuous attractor network, a standard model in which
+the activity of the whole group of cells lies on a doughnut shape (a torus). I then add reward and
+measure how the grid's spacing and angle change. I use topological data analysis
+to ask whether that doughnut bends or tears.

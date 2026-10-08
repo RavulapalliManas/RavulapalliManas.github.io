@@ -1,16 +1,10 @@
 ---
-title: "High-performance disk analysis tool"
+title: "Disk usage analyser"
 order: 4
-meta: "Asynchronous Rust, with a Tauri interface"
-excerpt: "An asynchronous Rust application that traverses file systems, visualises disk usage, and finds duplicates by cryptographic hash."
-tags:
-  - Rust
-  - Tauri
-  - Systems
+excerpt: "A desktop app written in Rust that shows what is filling up a disk and finds duplicate files."
 ---
 
-An asynchronous Rust application that traverses file systems, visualises disk
-usage, and detects duplicate files by cryptographic hash.
-
-The interface is built with Tauri, and reports progress in real time while the
-scan runs. Cleanup is interactive rather than automatic.
+A desktop app that scans a disk, shows what takes up space, and finds duplicate
+files by comparing their contents. It is written in Rust with a Tauri interface,
+and it shows progress while the scan runs. You choose what to delete; the app
+doesn't delete anything on its own.

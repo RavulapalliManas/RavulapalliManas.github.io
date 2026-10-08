@@ -3,25 +3,15 @@ layout: page
 permalink: /writing/
 nav: writing
 title: "Writing"
-eyebrow: "Notes and posts"
-intro: "Research notes and write-ups."
-description: "Research notes and write-ups."
+description: "Notes and short write-ups on research."
 ---
 
-{%- if site.posts.size > 0 %}
-<section class="blog-list" aria-label="Posts">
+<ul class="list">
   {%- for post in site.posts %}
-  <article class="blog-item">
-    <p class="blog-item__date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time></p>
-    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-    <p class="blog-item__excerpt">{{ post.excerpt | strip_html | normalize_whitespace | truncate: 240 }}</p>
-    <a class="inline-link" href="{{ post.url | relative_url }}">Read post &rarr;</a>
-  </article>
+  <li>
+    <time class="meta" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    <p>{{ post.description }}</p>
+  </li>
   {%- endfor %}
-</section>
-{%- else %}
-<section class="empty-state">
-  <p>No posts yet.</p>
-  <p class="empty-state__hint">The research write-ups live under <a href="{{ '/research/' | relative_url }}">Research</a> for now.</p>
-</section>
-{%- endif %}
+</ul>

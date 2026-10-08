@@ -1,7 +1,7 @@
 ---
 title: "Ideas on Creating Artificial Life in Silico"
 date: 2026-10-08 12:00:00 +0530
-description: "Notes on building an agent the way biology builds an animal: a body that must stay alive, feelings that tune how it learns, memory, a model of the world, and a childhood. What I expected, what I tried, and what broke."
+description: "Notes on building an agent the way biology builds an animal, starting from a body that has to stay alive. The ideas, and what went wrong when I first put them together."
 tags: [artificial life, reinforcement learning, neuroscience]
 ---
 

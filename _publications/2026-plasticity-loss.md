@@ -3,18 +3,14 @@ title: "Load-dependent loss of plasticity in small language models"
 date: 2026-06-01
 order: 4
 authors: "Ravulapalli, M., et al."
-meta: "Ravulapalli, M., et al."
 status: "In preparation."
-excerpt: "A formed-then-collapsed circuit is a worse state to be in than one that never formed at all."
-tags:
-  - Plasticity
-  - Training dynamics
-  - Critical windows
+excerpt: "A small model that learns a skill and then loses it has a harder time relearning it than a model that never learned it at all."
 ---
 
-Roughly 890 training runs on a controlled binding task.
+We train small language models on a task where they have to link facts in their
+prompt. If a model learns the skill and then loses it, it has a harder time
+learning it again than a model that never learned it.
 
-A formed-then-collapsed circuit is a worse, absorbing state than one never
-formed (McNemar `p = 0.007`). A pulse-response plasticity measure decays 30 to
-100 times within about 8,000 steps of supervision deprivation. The critical
-window `tau_c(K)` shortens as binding load rises.
+The ability to learn the skill also fades quickly once training stops asking for
+it. The harder the task, the shorter the window in which the model can still
+pick it up.
