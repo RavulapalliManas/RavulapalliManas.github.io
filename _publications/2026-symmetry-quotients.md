@@ -1,10 +1,10 @@
 ---
-title: "Place-field repetition is what a predictive map must do when self-motion cannot resolve it: a cognitive map represents space only up to the symmetries self-motion cannot break"
+title: "Predictive learning folds spatial maps along symmetries"
 date: 2026-09-01
 order: 1
 authors: "Ravulapalli, M."
-pdf: "/files/papers/ravulapalli-symmetry-quotients-elife-manuscript.pdf"
-status: "Extended abstract submitted to NeurReps 2026, a NeurIPS workshop. Full paper in preparation."
+pdf: "/files/papers/ravulapalli-predictive-learning-folds-spatial-maps.pdf"
+status: "Manuscript in preparation for bioRxiv. Extended abstract submitted to NeurReps 2026, a NeurIPS workshop."
 excerpt: "A network that learns a map by predicting what it will see next merges places it can't tell apart. This explains when place cells should repeat their firing across rooms that look the same."
 ---
 
