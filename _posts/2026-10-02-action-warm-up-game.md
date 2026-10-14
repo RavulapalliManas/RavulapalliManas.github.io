@@ -1,5 +1,5 @@
 ---
-title: "A short grid game helps a language model learn English, but it doesn't pay for itself"
+title: "Does a warm-up game help a language model?"
 date: 2026-10-02 15:30:00 +0530
 description: "Animals learn the structure of the world by acting in it. I gave a small language model a grid game with moves before it read English. Seeing its own moves helped a little, but the game cost more training than it saved."
 tags: [language models, pre-pretraining, neuroscience]
