@@ -25,10 +25,30 @@ layout: base
       {%- for paper in papers %}
       <li>
         <a href="{{ paper.url | relative_url }}">{{ paper.title }}</a>
-        <p class="meta">{{ paper.status }}</p>
+        <p class="meta">{{ paper.status }}{% if paper.pdf %} <a href="{{ paper.pdf | relative_url }}">PDF</a>{% endif %}</p>
       </li>
       {%- endfor %}
     </ul>
+    <p class="more"><a href="{{ '/research/' | relative_url }}">All research &rsaquo;</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <h2>Projects</h2>
+    <ul class="list">
+      {%- assign projects = site.portfolio | sort: "order" %}
+      {%- for project in projects %}
+      <li>
+        <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+        <p>{{ project.excerpt | strip_html }}</p>
+        {%- if project.code %}
+        <p class="meta">{% for link in project.code %}{% unless forloop.first %} &middot; {% endunless %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}</p>
+        {%- endif %}
+      </li>
+      {%- endfor %}
+    </ul>
+    <p class="more"><a href="{{ '/projects/' | relative_url }}">All projects &rsaquo;</a></p>
   </div>
 </section>
 
@@ -44,21 +64,7 @@ layout: base
       </li>
       {%- endfor %}
     </ul>
+    <p class="more"><a href="{{ '/writing/' | relative_url }}">All writing &rsaquo;</a></p>
   </div>
 </section>
 {%- endif %}
-
-<section class="section">
-  <div class="shell">
-    <h2>Projects</h2>
-    <ul class="list">
-      {%- assign projects = site.portfolio | sort: "order" %}
-      {%- for project in projects %}
-      <li>
-        <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
-        <p>{{ project.excerpt | strip_html }}</p>
-      </li>
-      {%- endfor %}
-    </ul>
-  </div>
-</section>

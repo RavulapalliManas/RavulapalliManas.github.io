@@ -203,8 +203,20 @@ pre {
   margin-bottom: 1.4em;
 }
 
-.list li > a {
+/* Titles read as text; blue is kept for actions such as PDF and GitHub links. */
+.list li > a,
+.list li > a:visited {
+  color: var(--text);
   font-weight: 500;
+}
+
+.list li > a:hover {
+  color: var(--accent);
+}
+
+.more {
+  margin-top: 0.4em;
+  font-size: 16px;
 }
 
 .list p {
