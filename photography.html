@@ -9,26 +9,34 @@ description: "Photographs taken outside the lab."
 
 {%- assign photos = site.data.photos %}
 {%- if photos != nil and photos.size > 0 %}
-<section class="photo-grid" aria-label="Photography gallery">
-  {%- for photo in photos %}
-  <article class="photo-entry">
-    <button class="photo-button" type="button"
-            data-lightbox-index="{{ forloop.index0 }}"
-            data-lightbox-src="{{ '/images/photos/' | append: photo.file | relative_url }}"
-            data-lightbox-alt="{{ photo.alt }}">
-      <img src="{{ '/images/photos/' | append: photo.file | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
-    </button>
-    <div class="photo-entry__meta">
-      <p class="photo-entry__caption">{{ photo.caption }}</p>
-      {%- if photo.tags %}
-      <div class="tag-row">
-        {%- for tag in photo.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+{%- assign groups = photos | group_by: "group" %}
+{%- assign index = 0 %}
+{%- for group in groups %}
+<section class="photo-group" aria-label="{{ group.name }}">
+  <h2>{{ group.name }}</h2>
+  <div class="photo-strip" tabindex="0">
+    {%- for photo in group.items %}
+    <article class="photo-entry">
+      <button class="photo-button" type="button"
+              data-lightbox-index="{{ index }}"
+              data-lightbox-src="{{ '/images/photos/' | append: photo.file | relative_url }}"
+              data-lightbox-alt="{{ photo.alt }}">
+        <img src="{{ '/images/photos/' | append: photo.file | relative_url }}" alt="{{ photo.alt }}" loading="lazy">
+      </button>
+      <div class="photo-entry__meta">
+        <p class="photo-entry__caption">{{ photo.caption }}</p>
+        {%- if photo.tags %}
+        <div class="tag-row">
+          {%- for tag in photo.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+        </div>
+        {%- endif %}
       </div>
-      {%- endif %}
-    </div>
-  </article>
-  {%- endfor %}
+    </article>
+    {%- assign index = index | plus: 1 %}
+    {%- endfor %}
+  </div>
 </section>
+{%- endfor %}
 
 <dialog class="lightbox-dialog" id="lightbox-dialog" aria-label="Image viewer">
   <button class="lightbox-dialog__close" type="button" aria-label="Close image viewer">&#10005;</button>

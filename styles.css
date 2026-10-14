@@ -298,10 +298,23 @@ pre {
 }
 
 /* ---------- Photography ---------- */
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+.photo-group + .photo-group {
+  margin-top: 40px;
+}
+
+/* One row per group that scrolls sideways and snaps to each photo. */
+.photo-strip {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+}
+
+.photo-strip .photo-entry {
+  flex: 0 0 260px;
+  scroll-snap-align: start;
 }
 
 .photo-button {
@@ -453,7 +466,7 @@ pre {
     display: none;
   }
 
-  .photo-grid {
-    grid-template-columns: 1fr;
+  .photo-strip .photo-entry {
+    flex-basis: 75%;
   }
 }

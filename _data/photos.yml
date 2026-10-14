@@ -1,4 +1,5 @@
-# Photography gallery.
+# Photography gallery. Each `group` becomes one horizontally scrolling row,
+# in the order the groups first appear. Entries are newest first.
 #
 # To add a photo:
 #   1. Put the image file in images/photos/
@@ -8,27 +9,109 @@
 # anyone whose images fail to load. Write what is in the frame.
 #
 # - file: reef-at-dusk.jpg
+#   group: Places
 #   caption: "Reef at dusk"
 #   alt: "A shallow reef under low orange light, with two fish in the foreground."
 #   tags: [Underwater, Wildlife]
 
+- file: rooftop-dog.jpg
+  group: Friends and family
+  caption: "With a dog, Uttarakhand, March 2026"
+  alt: "A person kneeling on a rooftop beside a German Shepherd, under a clear blue sky."
+  tags: [Dog, Uttarakhand]
+
+- file: umbrella-lunch.jpg
+  group: Friends and family
+  caption: "Lunch under the umbrella, Himachal Pradesh, October 2025"
+  alt: "Four friends sitting around a small table under a green umbrella, with bowls of food in front of them."
+  tags: [Friends, Food, Himachal Pradesh]
+
+- file: himachal-friends.jpg
+  group: Friends and family
+  caption: "Friends in the hills, Himachal Pradesh, October 2025"
+  alt: "Three friends sitting together on a rock on a grassy slope, with green mountains and a blue sky behind them."
+  tags: [Friends, Mountains, Himachal Pradesh]
+
+- file: hills-morning.jpg
+  group: Friends and family
+  caption: "Morning in the hills, Himachal Pradesh, October 2025"
+  alt: "Two friends sitting on a rock beside a green-roofed building, with a steep wooded mountain behind them."
+  tags: [Friends, Mountains, Himachal Pradesh]
+
+- file: midnight-cake.jpg
+  group: Friends and family
+  caption: "Midnight cake, Ashoka University, March 2025"
+  alt: "Seven friends standing arm in arm in a room at night, with a cake on the table in front of them."
+  tags: [Friends, Ashoka]
+
+- file: taj-mahal-friends.jpg
+  group: Friends and family
+  caption: "Taj Mahal, Agra, October 2024"
+  alt: "Five friends taking a selfie in the gardens, with the Taj Mahal behind them."
+  tags: [Friends, Travel, Agra]
+
+- file: kurtas.jpg
+  group: Friends and family
+  caption: "Three friends in kurtas, Ashoka University, October 2024"
+  alt: "Three friends in kurtas standing together at night, with a lit building behind them."
+  tags: [Friends, Ashoka]
+
+- file: dorm-late-night.jpg
+  group: Friends and family
+  caption: "Dorm, late night, Ashoka University, October 2024"
+  alt: "Two friends sitting on a bed in a dorm room at night, one with a laptop on his lap."
+  tags: [Friends, Dorm, Ashoka]
+
+- file: dorm-guitar.jpg
+  group: Friends and family
+  caption: "Guitar in the dorm, Ashoka University, September 2024"
+  alt: "Two friends sitting on a bed in a dorm room, one holding an acoustic guitar, both shaking hands."
+  tags: [Friends, Dorm, Music, Ashoka]
+
+- file: tirumala-family.jpg
+  group: Friends and family
+  caption: "Family, Tirumala, June 2024"
+  alt: "A family group of eight people standing together outdoors in front of a white wall and trees."
+  tags: [Family, Tirumala]
+
+- file: campus-night-friends.jpg
+  group: Friends and family
+  caption: "Friends on campus at night, Ashoka University, October 2023"
+  alt: "A group of friends posing outdoors at night with thumbs up, a parked car behind them."
+  tags: [Friends, Ashoka]
+
+- file: hyderabad-family.jpg
+  group: Friends and family
+  caption: "Family, Hyderabad, August 2023"
+  alt: "A family of four standing outside a shop entrance, smiling at the camera."
+  tags: [Family, Hyderabad]
+
+- file: friends-group.jpg
+  group: Friends and family
+  caption: "Friends"
+  alt: "A group of friends posing in a living room, four standing at the back and three seated in front."
+  tags: [Friends]
 
 - file: lake-blossom.jpg
+  group: Places
   caption: "Blossom over the lake, March 2026"
   alt: "Branches with small pink blossoms in front of a calm lake, with wooded hills and a building on the far shore."
   tags: [Lake, Blossom, Spring]
 
 - file: lake-haze.jpg
+  group: Places
   caption: "Afternoon haze, March 2026"
   alt: "A lake under hazy afternoon light, with layered blue hills behind it and a few small boats on the water."
   tags: [Lake, Mountains]
 
 - file: lake-shore.jpg
+  group: Places
   caption: "The far shore, March 2026"
   alt: "Green lake water in the foreground and a wooded shoreline with hills under a clear sky."
   tags: [Lake, Hills]
 
 - file: blue-water.jpg
+  group: Places
   caption: "Bhimtal, March 2026"
   alt: "Looking down into clear blue water, where a submerged branch runs across the frame and a bird sits on its tip."
   tags: [Lake, Bird, Bhimtal]
