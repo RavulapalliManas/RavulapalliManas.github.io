@@ -279,20 +279,12 @@ pre {
 }
 
 /* ---------- CV ---------- */
-.cv__row {
-  display: grid;
-  grid-template-columns: 120px minmax(0, 1fr);
-  gap: 16px;
-  margin-bottom: 1em;
-}
-
-.cv__row p {
-  margin-bottom: 0.2em;
-}
-
-.cv__when {
-  color: var(--muted);
-  font-size: 16px;
+.cv-pdf {
+  display: block;
+  width: 100%;
+  height: 85vh;
+  border: 1px solid var(--border);
+  background: #ffffff;
 }
 
 /* ---------- Photography ---------- */
@@ -394,9 +386,13 @@ pre {
     height: 120px;
   }
 
-  .list--dated li,
-  .cv__row {
+  .list--dated li {
     display: block;
+  }
+
+  /* Phone browsers show one page or nothing inside a frame; the link opens the full PDF. */
+  .cv-pdf {
+    display: none;
   }
 
   .photo-grid {
