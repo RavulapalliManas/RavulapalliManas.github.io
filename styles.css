@@ -313,6 +313,13 @@ pre {
   cursor: zoom-in;
 }
 
+/* Same shape in the grid so rows line up; the lightbox shows the full frame. */
+.photo-button img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
 .photo-entry__caption {
   margin-top: 0.4em;
   color: var(--muted);
