@@ -129,6 +129,8 @@ pre {
 
 .site-nav__inner {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
   align-items: center;
   justify-content: space-between;
   min-height: 48px;
@@ -147,7 +149,8 @@ pre {
 
 .site-nav__panel {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 4px 20px;
 }
 
 .site-nav__link,
@@ -388,6 +391,14 @@ pre {
 
   .list--dated li {
     display: block;
+  }
+
+  .site-nav__inner {
+    padding-block: 10px;
+  }
+
+  .site-nav__panel {
+    gap: 4px 16px;
   }
 
   /* Phone browsers show one page or nothing inside a frame; the link opens the full PDF. */

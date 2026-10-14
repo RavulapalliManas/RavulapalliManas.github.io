@@ -1,5 +1,20 @@
 ---
+layout: page
 permalink: /projects/
-redirect_to: /research/#projects
-sitemap: false
+nav: projects
+title: "Projects"
+description: "Software and research projects by Manas Ravulapalli."
 ---
+
+<ul class="list">
+  {%- assign projects = site.portfolio | sort: "order" %}
+  {%- for project in projects %}
+  <li>
+    <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+    <p>{{ project.excerpt | strip_html }}</p>
+    {%- if project.code %}
+    <p class="meta">{% for link in project.code %}{% unless forloop.first %} &middot; {% endunless %}<a href="{{ link.url }}">{{ link.label }}</a>{% endfor %}</p>
+    {%- endif %}
+  </li>
+  {%- endfor %}
+</ul>

@@ -1,5 +1,18 @@
 ---
+layout: page
 permalink: /teaching/
-redirect_to: /cv/#teaching
-sitemap: false
+nav: teaching
+title: "Teaching"
+description: "Courses Manas Ravulapalli has taught or helped teach."
 ---
+
+<ul class="list">
+  {%- assign courses = site.teaching | sort: "date" | reverse %}
+  {%- for course in courses %}
+  <li>
+    <a href="{{ course.url | relative_url }}">{{ course.title }}</a>
+    <p class="meta">{{ course.role }}, {{ course.venue }}. {{ course.period }}.</p>
+    <p>{{ course.excerpt | strip_html }}</p>
+  </li>
+  {%- endfor %}
+</ul>

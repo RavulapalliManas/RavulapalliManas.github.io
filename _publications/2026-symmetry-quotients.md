@@ -3,6 +3,7 @@ title: "Cognitive maps are symmetry quotients: why place fields repeat in identi
 date: 2026-09-01
 order: 1
 authors: "Ravulapalli, M."
+pdf: "/files/papers/ravulapalli-symmetry-quotients-elife-manuscript.pdf"
 status: "Extended abstract submitted to NeurReps 2026, a NeurIPS workshop. Full paper in preparation."
 excerpt: "A network that learns a map by predicting what it will see next merges places it can't tell apart. This explains when place cells should repeat their firing across rooms that look the same."
 ---

@@ -19,6 +19,9 @@ author:
 
 navigation:
   - { key: research,    title: "Research",    url: "/research/" }
+  - { key: projects,    title: "Projects",    url: "/projects/" }
+  - { key: teaching,    title: "Teaching",    url: "/teaching/" }
+  - { key: photography, title: "Photography", url: "/photography/" }
   - { key: writing,     title: "Writing",     url: "/writing/" }
   - { key: cv,          title: "CV",          url: "/cv/" }
 
@@ -73,16 +76,16 @@ defaults:
     values:
       layout     : entry
       nav        : projects
-      back_url   : "/research/#projects"
-      back_title : "Research"
+      back_url   : "/projects/"
+      back_title : "Projects"
   - scope:
       path       : ""
       type       : teaching
     values:
       layout     : entry
       nav        : teaching
-      back_url   : "/cv/#teaching"
-      back_title : "CV"
+      back_url   : "/teaching/"
+      back_title : "Teaching"
 
 include:
   - files

@@ -1,6 +1,8 @@
 ---
 title: "Cognitive tests for Alzheimer's disease"
 order: 3
+code:
+  - { label: "Code on GitHub", url: "https://github.com/RavulapalliManas/cognitive-task-app" }
 excerpt: "A set of digital tests for attention, working memory, and movement in people with Alzheimer's disease, scored automatically."
 ---
 

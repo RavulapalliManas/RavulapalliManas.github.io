@@ -3,6 +3,7 @@ title: "Visible but out-voted: in-context binding failures are query-time routin
 date: 2026-07-01
 order: 3
 authors: "Ravulapalli, M., et al."
+pdf: "https://arxiv.org/pdf/2609.11216"
 status: "In preparation."
 excerpt: "When a language model links the wrong facts together from its prompt, the right link is still stored inside the model. The mistake happens when the model reads the answer out."
 ---

@@ -13,18 +13,8 @@ description: "Papers in progress on how brains and neural networks learn maps, a
   <li>
     <a href="{{ paper.url | relative_url }}">{{ paper.title }}</a>
     <p>{{ paper.excerpt | strip_html }}</p>
-    <p class="meta">{{ paper.authors }} {{ paper.status }}</p>
+    <p class="meta">{{ paper.authors }} {{ paper.status }}{% if paper.pdf %} <a href="{{ paper.pdf | relative_url }}">PDF</a>{% endif %}</p>
   </li>
   {%- endfor %}
 </ul>
 
-<h2 id="projects">Other projects</h2>
-<ul class="list">
-  {%- assign projects = site.portfolio | sort: "order" %}
-  {%- for project in projects %}
-  <li>
-    <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
-    <p>{{ project.excerpt | strip_html }}</p>
-  </li>
-  {%- endfor %}
-</ul>

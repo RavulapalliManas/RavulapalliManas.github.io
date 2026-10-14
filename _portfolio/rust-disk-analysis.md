@@ -1,6 +1,8 @@
 ---
 title: "Disk usage analyser"
 order: 4
+code:
+  - { label: "Code on GitHub", url: "https://github.com/DPCS3810/project-1-codebits" }
 excerpt: "A desktop app written in Rust that shows what is filling up a disk and finds duplicate files."
 ---
 

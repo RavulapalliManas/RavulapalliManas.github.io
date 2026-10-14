@@ -1,6 +1,9 @@
 ---
 title: "Zebrafish tracking"
 order: 2
+code:
+  - { label: "Tracker on GitHub", url: "https://github.com/RavulapalliManas/Zebrafish-tracker-" }
+  - { label: "Simulations on GitHub", url: "https://github.com/RavulapalliManas/Fish_Emergent_Behavior" }
 excerpt: "Software that tracks zebrafish in video and measures how a group swims together, plus simulations that reproduce what the fish do."
 ---
 
