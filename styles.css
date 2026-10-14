@@ -388,12 +388,33 @@ pre {
 }
 
 /* ---------- Footer ---------- */
+/* Small and gray, like apple.com, so it never competes with the page. */
 .site-footer {
   margin-top: 32px;
-  padding-block: 24px;
+  padding-block: 20px;
   border-top: 1px solid var(--border);
   color: var(--muted);
-  font-size: 16px;
+  font-size: 13px;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 24px;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a,
+.site-footer a:visited {
+  color: var(--muted);
+}
+
+.site-footer a:hover {
+  color: var(--text);
 }
 
 /* ---------- Small screens ---------- */

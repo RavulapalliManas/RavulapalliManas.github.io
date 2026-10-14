@@ -1,10 +1,13 @@
 <footer class="site-footer">
-  <div class="shell">
+  <div class="shell site-footer__inner">
+    <p>&copy; {{ site.time | date: "%Y" }} {{ site.brand }}</p>
+    {%- unless page.nav == "home" %}
     <p>
       <a href="mailto:{{ site.author.email }}">Email</a> &middot;
       <a href="{{ site.author.github }}">GitHub</a> &middot;
       <a href="{{ site.author.linkedin }}">LinkedIn</a> &middot;
       <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
     </p>
+    {%- endunless %}
   </div>
 </footer>
