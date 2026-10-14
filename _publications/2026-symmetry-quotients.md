@@ -1,5 +1,5 @@
 ---
-title: "Cognitive maps are symmetry quotients: why place fields repeat in identical rooms"
+title: "Place-field repetition is what a predictive map must do when self-motion cannot resolve it: a cognitive map represents space only up to the symmetries self-motion cannot break"
 date: 2026-09-01
 order: 1
 authors: "Ravulapalli, M."
