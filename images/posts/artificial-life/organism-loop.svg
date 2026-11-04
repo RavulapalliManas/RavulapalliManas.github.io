@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 390" role="img" aria-labelledby="title desc">
+  <title id="title">A sketch of the proposed organism</title>
+  <desc id="desc">The world and body feed observations to a policy, which produces actions that affect the world. Memory and prediction can inform the policy. Body signals can also adjust learning and exploration. This is a design sketch, not a map of an actual biological circuit.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#252525" stroke-width="1.4"/></marker>
+  </defs>
+  <rect width="1000" height="390" fill="white"/>
+  <g fill="none" stroke="#252525" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M25 67 Q24 56 36 56 L207 57 Q219 57 219 69 L218 134 Q218 145 206 144 L37 145 Q25 145 25 133 Z"/>
+    <path d="M276 67 Q275 56 287 56 L450 57 Q462 57 462 69 L461 134 Q461 145 449 144 L288 145 Q276 145 276 133 Z"/>
+    <path d="M531 67 Q530 56 542 56 L681 57 Q693 57 693 69 L692 134 Q692 145 680 144 L543 145 Q531 145 531 133 Z"/>
+    <path d="M759 67 Q758 56 770 56 L952 57 Q964 57 964 69 L963 134 Q963 145 951 144 L771 145 Q759 145 759 133 Z"/>
+    <path d="M275 217 Q274 206 286 206 L450 207 Q462 207 462 219 L461 272 Q461 283 449 282 L287 283 Q275 283 275 271 Z"/>
+    <path d="M531 217 Q530 206 542 206 L724 207 Q736 207 736 219 L735 272 Q735 283 723 282 L543 283 Q531 283 531 271 Z"/>
+    <path d="M219 100 L271 100" marker-end="url(#arrow)"/>
+    <path d="M462 100 L526 100" marker-end="url(#arrow)"/>
+    <path d="M693 100 L754 100" marker-end="url(#arrow)"/>
+    <path d="M861 56 C861 25 842 17 820 17 L170 17 C140 17 122 24 122 51" marker-end="url(#arrow)"/>
+    <path d="M368 145 L368 201" marker-end="url(#arrow)"/>
+    <path d="M462 230 C500 230 499 165 565 150" marker-end="url(#arrow)"/>
+    <path d="M96 145 C95 230 125 310 235 310 L510 310 L510 252 L526 252" marker-end="url(#arrow)"/>
+    <path d="M633 206 L633 150" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#252525" font-family="Chalkboard SE, Comic Sans MS, cursive" text-anchor="middle">
+    <text x="122" y="89" font-size="19"><tspan x="122">World and body</tspan><tspan x="122" dy="25" font-size="16">needs, risks, places</tspan></text>
+    <text x="369" y="89" font-size="19"><tspan x="369">Observations</tspan><tspan x="369" dy="25" font-size="16">and internal state</tspan></text>
+    <text x="612" y="108" font-size="20">Policy</text>
+    <text x="861" y="108" font-size="20">Actions</text>
+    <text x="369" y="238" font-size="18"><tspan x="369">Memory and</tspan><tspan x="369" dy="23">prediction</tspan></text>
+    <text x="634" y="237" font-size="18"><tspan x="634">Learning and</tspan><tspan x="634" dy="23">exploration settings</tspan></text>
+    <text x="188" y="273" font-size="15"><tspan x="188">body</tspan><tspan x="188" dy="19">signals</tspan></text>
+    <text x="500" y="40" font-size="15">actions change the world and the body</text>
+    <text x="500" y="377" font-size="14" fill="#555">A design sketch: the arrows are proposals, not a map of a biological circuit.</text>
+  </g>
+</svg>

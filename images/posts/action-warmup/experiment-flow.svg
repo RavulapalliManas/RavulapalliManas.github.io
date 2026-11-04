@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" role="img" aria-labelledby="title desc">
+  <title id="title">The warm-up experiment</title>
+  <desc id="desc">Generated random walks become either visible-move or hidden-move records. Each is used for a synthetic warm-up before English training and evaluation. A no-warm-up baseline goes straight to English. The model does not choose the moves.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#252525" stroke-width="1.4"/></marker>
+  </defs>
+  <rect width="1000" height="360" fill="white"/>
+  <g fill="none" stroke="#252525" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 118 Q22 107 36 107 L173 108 Q184 108 184 120 L183 191 Q182 201 171 201 L35 200 Q24 200 24 189 Z"/>
+    <path d="M235 57 Q234 48 245 48 L388 49 Q399 49 399 59 L398 106 Q398 116 387 115 L244 116 Q234 116 235 106 Z"/>
+    <path d="M235 149 Q234 139 245 139 L388 140 Q399 140 399 150 L398 197 Q398 207 387 206 L245 207 Q234 207 235 197 Z"/>
+    <path d="M448 117 Q447 107 459 107 L589 108 Q600 108 600 119 L599 191 Q599 201 588 201 L459 200 Q448 200 448 190 Z"/>
+    <path d="M660 117 Q659 107 671 107 L808 108 Q819 108 819 119 L818 191 Q818 201 807 201 L671 200 Q660 200 660 190 Z"/>
+    <path d="M858 117 Q857 107 869 107 L972 108 Q983 108 983 119 L982 191 Q982 201 971 201 L870 200 Q858 200 858 190 Z"/>
+    <path d="M448 264 Q447 254 459 254 L589 255 Q600 255 600 265 L599 305 Q599 315 588 315 L459 314 Q448 314 448 304 Z"/>
+    <path d="M184 135 C204 135 210 82 230 82" marker-end="url(#arrow)"/>
+    <path d="M184 174 C204 174 210 173 230 173" marker-end="url(#arrow)"/>
+    <path d="M399 82 C424 82 424 133 443 133" marker-end="url(#arrow)"/>
+    <path d="M399 173 L443 173" marker-end="url(#arrow)"/>
+    <path d="M600 154 L655 154" marker-end="url(#arrow)"/>
+    <path d="M819 154 L853 154" marker-end="url(#arrow)"/>
+    <path d="M600 284 C687 284 742 287 741 206" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#252525" font-family="Chalkboard SE, Comic Sans MS, cursive" text-anchor="middle">
+    <text x="104" y="143" font-size="19"><tspan x="104">Generated</tspan><tspan x="104" dy="25">random walks</tspan></text>
+    <text x="317" y="76" font-size="19"><tspan x="317">D: moves shown</tspan><tspan x="317" dy="23" font-size="15">label, move, label …</tspan></text>
+    <text x="317" y="167" font-size="19"><tspan x="317">C: moves hidden</tspan><tspan x="317" dy="23" font-size="14">same walks; STEP token</tspan></text>
+    <text x="524" y="144" font-size="19"><tspan x="524">Warm-up</tspan><tspan x="524" dy="24" font-size="16">100M tokens</tspan></text>
+    <text x="739" y="144" font-size="19"><tspan x="739">English training</tspan><tspan x="739" dy="24" font-size="16">499.9M tokens</tspan></text>
+    <text x="920" y="145" font-size="18"><tspan x="920">Held-out</tspan><tspan x="920" dy="24">English loss</tspan></text>
+    <text x="524" y="280" font-size="18"><tspan x="524">A: no warm-up</tspan><tspan x="524" dy="22" font-size="15">baseline</tspan></text>
+    <text x="316" y="244" font-size="16">The model reads the moves; it does not choose them.</text>
+    <text x="500" y="345" font-size="14" fill="#555">Simplified view. The experiment also included other warm-up controls.</text>
+  </g>
+</svg>

@@ -1,0 +1,4 @@
+training_pressure,mean_score,sample_sd,seeds
+1x,3.75,0.269,20
+6x,4.063,0.303,20
+24x,3.762,0.315,20

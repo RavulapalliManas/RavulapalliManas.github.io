@@ -1,78 +1,99 @@
 ---
-title: "Ideas on Creating Artificial Life in Silico"
+title: "Lessons from building in silico life with homeostatic RL"
 date: 2026-10-08 12:00:00 +0530
-description: "Notes on building an agent the way biology builds an animal, starting from a body that has to stay alive. The ideas, and what went wrong when I first put them together."
+description: "What might an artificial organism learn when its body has needs? These are the ideas I want to explore and the first experiments that pushed back on them."
 tags: [artificial life, reinforcement learning, neuroscience]
 ---
 
-**In short:** Most reinforcement-learning agents are given a score to maximise and nothing else. An animal is different. It has a body that can fail, and everything it does serves the job of staying alive. I'm exploring what happens if you build an agent that way. This post describes the ideas, one design principle I now believe in, and the first thing that went wrong.
+I keep coming back to a question that is bigger than the experiments in this post: what would it take for an artificial agent to develop something like a life of its own?
 
-## Why start from a body?
+I want to start with something concrete. An animal has to keep a body going while it learns about a world. It gets hungry, runs out of energy, encounters danger, and has to remember where useful things are. Those pressures do not arrive as a neat list of tasks. They are there together, all the time.
 
-An animal doesn't wake up with a reward function. It wakes up hungry. Food, water, sleep, and safety are things its body needs, and the body keeps draining them. The drive to act comes from that drain. "Reward" is closer to relief than to a prize.
+I want to understand whether building from those pressures can give an agent a more coherent reason to learn. What happens when its memory, predictions, and decisions grow around the needs of a body?
 
-Reinforcement learning has a name for this view. Keramati and Gutkin (2014) called it homeostatic reinforcement learning: the agent has internal variables it must keep near a set point, and reward is the reduction of the gap between where those variables are and where they should be. A meal is rewarding because you were hungry, and for no other reason.
+## Starting with a body
 
-I like this idea for a practical reason, and a philosophical one. The practical reason is that the agent gets a reason to act in every situation, with no hand-written list of goals. The philosophical reason is that it makes survival the root of the whole system. Everything else becomes a tool for staying alive.
+Imagine an agent that finds water in a place it has visited before. Its need for water matters now. Its memory of that place matters because of the need. Its prediction of what lies between here and there might matter because the route is dangerous. I like this picture because the pieces have reasons to talk to one another.
 
-## What a living agent might need
+[Keramati and Gutkin's homeostatic reinforcement learning model](https://elifesciences.org/articles/04811) formalises one version of this idea. The agent has internal needs, and a reduction in its overall deficit can be used as a learning signal. It is a model of how physiological stability and reward might interact, not a claim that every human action or meal has only one cause.
 
-Here is the list of parts I think an artificial organism needs. None of these is new on its own. Each has a literature behind it. The bet is on what happens when they are put together and made to depend on each other.
+[![A proposed organism loop connecting the world and body to observations, policy, actions, memory and learning settings](/images/posts/artificial-life/organism-loop.svg)](/images/posts/artificial-life/organism-loop.svg)
 
-**A body with needs.** A few internal variables that fall over time and can be refilled, and a way for the agent to die. The world has to be able to hurt it.
+*A sketch of the direction I want to explore. It is a design proposal, not a diagram of an established biological circuit or a claim that every arrow worked in my experiments. Select any figure to view it at full size.*
 
-**Feelings as settings, not as rewards.** In the brain, chemicals such as dopamine, serotonin, and noradrenaline don't carry the content of an experience. They change how the brain learns and decides: how fast to update, how much to explore, how far ahead to care. Doya (2002) laid out this mapping as a theory of how the brain sets its own learning parameters. I'm treating "emotion" in an agent the same way. A feeling is a signal that tunes a setting, such as exploration or learning speed, and it has a measurable job.
+A body on its own is not enough. The agent still has to decide what deserves attention, remember what happened, and choose when to act or think. Here are the pieces I find worth exploring together.
 
-**Curiosity.** An animal that only ever acts on current needs never finds anything new. Curiosity pushes the agent toward situations it can't yet predict. Pathak and colleagues (2017) is a standard starting point for this in machine learning.
+**Needs and safety.** Internal resources can drain and be replenished. The world can hurt the agent, and survival can depend on what it does.
 
-**Memory.** Where was the water? Where did the danger come from? An organism that forgets every place it has been has to rediscover its world each time.
+**Signals that change learning.** I am interested in treating something like arousal as a signal that adjusts exploration, learning speed, or another measurable setting. [Doya](https://pubmed.ncbi.nlm.nih.gov/12371507/) proposed connections between neuromodulators and learning parameters. Those connections are a useful theory to draw from, not a settled one-to-one map of each chemical to a single function.
 
-**A model of the world.** The agent learns to predict what happens next, and uses the prediction to imagine before it acts. Predictions that fail are also a signal that something has changed.
+**Curiosity.** An agent may need a reason to investigate before a place becomes immediately useful. [Prediction-based curiosity](https://proceedings.mlr.press/v70/pathak17a.html) is one way to formalise this. It also raises a hard question: how do we keep surprise from becoming a goal the agent pursues at the expense of everything else?
 
-**Planning, with a price.** Thinking costs energy, in a brain and in a computer. A sensible agent thinks longer only when the extra thought is likely to change its choice, and only when it trusts its own model enough to rely on it.
+**Memory and prediction.** Where was the water? What happened the last time a creature appeared? An organism should be able to use the past without treating every old memory as equally relevant. A learned model of the world might also let it predict the consequences of an action before taking it.
 
-**A childhood.** Animals don't start by facing the full world. A parent protects the young, shows them things, and gradually lets them take over. I want the agent to go through early life under a caregiver before it is on its own, so that its first learning happens in a safe, structured setting.
+**Planning with a cost.** More thought is not automatically better. I want the agent to spend computation when it could improve a decision, and to be cautious when its predictions are unreliable.
 
-## One principle I now believe in
+**A childhood.** This is further ahead, but it matters to me. Many animals learn under protection before they must deal with the world alone. I would like to explore a caregiver and a gradual handover of responsibility, rather than assume that every agent has to begin with the full problem.
 
-Feelings should change how the agent learns. They shouldn't be added to what it is paid.
+## The world I tested
 
-This sounds like a small point, and it turned out to matter a lot. If you add an internal signal such as curiosity or arousal straight into the reward, you quietly change what the agent is trying to do. It starts optimising the signal. A bonus for novelty that never goes away turns into a bonus for staying alive and wandering, whether or not that gets anything done.
+For the initial experiments I used [Craftax-Classic](https://proceedings.mlr.press/v235/matthews24a.html), a fast reimplementation of the survival game [Crafter](https://arxiv.org/abs/2109.06780). The agent gathers resources, crafts, eats, drinks, sleeps, and encounters threats. The runs here use symbolic observations of the environment, not pixels.
 
-There is a classic result that tells you when a bonus is safe. Ng, Harada, and Russell (1999) showed that a reward bonus leaves the best behaviour unchanged only if it has a particular form, a difference between the value of two states (this is called potential-based shaping). Anything outside that form can change what the agent learns to want.
+The score in the plots combines success rates across the game's achievements. It is not the percentage of episodes in which the agent completed the whole game. For each run, I averaged evaluation scores across checkpoints during one million environment steps. The points below are means across random seeds, and the whiskers show one sample standard deviation.
 
-So the rule I'm working with has two parts. Either a signal carries information the agent could not get any other way, or it controls a setting that has a measurable target. If it does neither, it doesn't belong in the agent.
+## First, a result about need pressure
 
-## A testbed
+I changed how quickly needs drained during training, then evaluated the agents under the same native-pressure condition. The question was whether making the body more demanding could help the agent learn.
 
-I'm using Crafter (Hafner, 2022), a 2D survival game. The agent has to gather resources, craft tools, eat, drink, sleep, and avoid monsters. It rewards a long chain of skills, it has day and night, and it can kill the agent. That makes it a good small stand-in for a world with a body and a risk.
+[![Mean achievement scores for agents trained with one, six, and twenty-four times native need pressure](/images/posts/artificial-life/need-pressure.svg)](/images/posts/artificial-life/need-pressure.svg)
 
-## What went wrong first
+*Twenty seeds per training pressure. Each point is the mean of each seed's checkpoint-averaged score; whiskers show one sample standard deviation. Evaluation used native pressure in every group. The [plotted summary](/images/posts/artificial-life/need-pressure.csv) comes from my run report.*
 
-My first build had all of the parts above, assembled together. It did worse than a plain baseline agent that had none of them.
+At the native training pressure, the mean score was 3.750. At six times the pressure, it was 4.063. At twenty-four times, it was 3.762. The middle setting beat both ends in this predeclared comparison. That is interesting to me because it suggests that the strength of the body's needs can change the course of learning, even when evaluation happens under the same pressure.
 
-That was a useful result, even though I didn't want it. I then added the parts one layer at a time, and every layer lowered the score. Looking into why, I found the same story in several places. Each part was added because the brain has one. Each part sent out its signal whether or not the signal was ready to be useful. Some started out carrying no information and then changed as they learned, so the main learner was always chasing a moving input. Some added reward terms that pulled the agent toward the wrong goal. One part made planning decisions from a very weak model of the world. The agent wasn't short of information to begin with, so the extra parts mostly added noise.
+But I do not want to turn this into a general law about the best amount of pressure. This is one agent and one evaluation setting. Pressure also changes several things at once, including the experiences the agent collects and, in some configurations, its exploration settings. A later temperature comparison made exploration a plausible part of the story, but it did not isolate a single cause.
 
-This lines up with a lesson from software engineering: build in order, and check each part on its own before it joins the rest.
+## Then, the build that pushed back
 
-## What did work
+I wanted to put memory, prediction, curiosity, and other controls into one organism. My expectation was that the combination would give the policy more useful ways to learn. It did not work out that way in the first assembled versions.
 
-One effect held up in repeated tests. Making the body's needs press harder, to a moderate level, helped the agent learn faster, and pushing the pressure too far stopped helping. Much of the gain seemed to come through how much the agent explored, which is a setting, and not through the reward. That fits the principle above: the body shaped how the agent learned.
+[![Mean achievement scores for the backbone and three assembled module configurations](/images/posts/artificial-life/module-scores.svg)](/images/posts/artificial-life/module-scores.svg)
 
-## Where this goes next
+*Evaluation used native pressure. B is the backbone without the additional modules; F0 adds a bundle of modules; F1 adds five proposed fixes; F2 adds planning to F1. Points are means across seeds and whiskers show one sample standard deviation. The [plotted summary](/images/posts/artificial-life/module-scores.csv) comes from my run report.*
 
-Three things I plan to do:
+The backbone averaged 4.013 across 20 seeds. The first assembled configuration averaged 3.645 across 10 seeds. The version with the proposed fixes averaged 3.125, and the version with planning averaged 2.170, each across 10 seeds. These are comparisons between whole configurations. They do not tell me that any one module caused the difference.
 
-1. Give each part an entry test. A part joins the agent only if it passes a check on its own signal and doesn't lower the score of the agent without it.
-2. Rewrite the body's reward as the relief of a need, and move curiosity and arousal into the role of controlling settings.
-3. Try the body-and-feeling ideas inside a stronger world-model agent, to see whether they help a learner that already predicts well.
+The logs give me places to investigate. In the fixed configurations, the curiosity signal was nearly constant, so its reward bonus could act more like a payment for staying alive than a useful measure of novelty. The planning version used a weak predictive model, and its score fell later in training. Other inputs and auxiliary losses changed while the policy was learning. These are observations and possible explanations, not isolated causal tests.
 
-I don't know yet whether any of this beats a good baseline. The honest status is that the ideas are clear, the first assembly failed, and the way to find out which ideas are worth keeping is to add them back one at a time.
+I found this failure useful. It is easy to look at a biological system and say that an artificial agent needs a piece for each thing we recognise. That does not tell us whether a particular implementation sends a useful signal, whether the rest of the agent can use it, or whether adding it changes the problem the agent is solving.
+
+## What should a signal do?
+
+Here is the design principle I am leaning toward: before adding an internal signal, ask what information it contributes or what decision it is supposed to improve. If it adjusts exploration, I should be able to measure exploration. If it gates planning, I should check whether the plan improves the action enough to justify the cost.
+
+Rewards need particular care. Adding a curiosity bonus changes the objective the agent is trained to optimise. Sometimes that may be exactly what we want. It should not happen by accident.
+
+There is a useful result from [Ng, Harada, and Russell](https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf). Under the usual assumptions, a potential-based bonus can guide learning while preserving the optimal policy of the original task. Its form is <math xmlns="http://www.w3.org/1998/Math/MathML" aria-label="gamma times phi of the next state minus phi of the current state"><mrow><mi>γ</mi><mi>Φ</mi><mo>(</mo><msup><mi>s</mi><mo>′</mo></msup><mo>)</mo><mo>−</mo><mi>Φ</mi><mo>(</mo><mi>s</mi><mo>)</mo></mrow></math>, where <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>γ</mi></math> is the discount, <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Φ</mi></math> assigns a potential to a state, and the primed state is the next one. Terminal states and the assumptions of the result still need care. Other bonuses can change the optimal policy; they do not necessarily do so in every problem.
+
+This gives me a concrete experiment. I can compare a reward based on the level of a body's deficit with a carefully implemented potential-based signal, then measure what happens to achievement and survival. I do not yet know which will work better here.
+
+## Where I want to go next
+
+I want to rebuild slowly enough to see what each addition does. A memory should pass a retrieval test before its output reaches the policy. A world model should earn trust against simple baselines before the agent uses its imagined futures. A planning mechanism should show that the actions it changes are better, not just that it produces a plan.
+
+I also want to separate need pressure from exploration. One test would hold temperature fixed while varying pressure, then test a need-driven controller against that fixed setting. Another would compare the proposed body reward directly with the current one. Those experiments could tell me whether the idea I find appealing is actually doing useful work.
+
+Further out, I would like to try the body and learning-control ideas in a stronger world-model agent and, eventually, in a setting with a caregiver. The point is not to copy biology piece by piece. It is to understand how needs, perception, memory, learning, and action can form a system whose parts help one another.
+
+## Limitations
+
+These results come from one game, symbolic observations, and a limited training budget. The pressure comparison uses one evaluation condition, so it does not establish a universal optimum. The module comparisons change bundles of mechanisms, which prevents attribution to individual pieces. An additional wiring configuration produced non-finite results in four of ten seeds; I have not treated it as a valid performance comparison. The proposed childhood, feeling-like controls, and integrated system remain research directions. None of these experiments establishes consciousness or artificial life in the biological sense.
 
 ## References
 
-- Doya, K. (2002). Metalearning and neuromodulation. *Neural Networks*, 15(4-6), 495-506.
-- Hafner, D. (2022). Benchmarking the spectrum of agent capabilities (Crafter). *ICLR 2022*.
-- Keramati, M. and Gutkin, B. (2014). Homeostatic reinforcement learning for integrating reward collection and physiological stability. *eLife*, 3, e04811.
-- Ng, A., Harada, D. and Russell, S. (1999). Policy invariance under reward transformations: theory and application to reward shaping. *ICML 1999*.
-- Pathak, D., Agrawal, P., Efros, A. and Darrell, T. (2017). Curiosity-driven exploration by self-supervised prediction. *ICML 2017*.
+- Doya. *Metalearning and neuromodulation.* 2002. [PubMed](https://pubmed.ncbi.nlm.nih.gov/12371507/)
+- Hafner. *Benchmarking the Spectrum of Agent Capabilities.* 2022. [arXiv:2109.06780](https://arxiv.org/abs/2109.06780)
+- Keramati and Gutkin. *Homeostatic Reinforcement Learning for Integrating Reward Collection and Physiological Stability.* 2014. [eLife](https://elifesciences.org/articles/04811)
+- Matthews and colleagues. *Craftax: A Lightning-Fast Benchmark for Open-Ended Reinforcement Learning.* 2024. [PMLR](https://proceedings.mlr.press/v235/matthews24a.html)
+- Ng, Harada and Russell. *Policy Invariance under Reward Transformations: Theory and Application to Reward Shaping.* 1999. [paper](https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf)
+- Pathak, Agrawal, Efros and Darrell. *Curiosity-driven Exploration by Self-supervised Prediction.* 2017. [PMLR](https://proceedings.mlr.press/v70/pathak17a.html)
