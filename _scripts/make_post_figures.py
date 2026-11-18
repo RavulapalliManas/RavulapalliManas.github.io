@@ -89,3 +89,33 @@ ax.grid(axis='x', color='0.9')
 ax.set_title('The assembled configurations scored lower', loc='left', pad=12)
 save(fig, LIFE / 'module-scores.svg', 'Source: module-scores.csv; points are means, whiskers are sample standard deviations.')
 print('Wrote three SVG plots from CSV snapshots.')
+
+control = rows(LIFE / 'temperature-control.csv')
+fig, ax = plt.subplots(figsize=(7.5, 4.3), layout='constrained')
+for label, color, marker in [('body-dependent', '#202020', 'o'), ('fixed', '#a34a31', 's')]:
+    group = [row for row in control if row['temperature'] == label]
+    ax.errorbar(range(3), [float(r['mean_score']) for r in group],
+                yerr=[float(r['sample_sd']) for r in group], label=label.capitalize(),
+                color=color, marker=marker, capsize=4, linewidth=1.5)
+ax.set_xticks(range(3), ['1×', '6×', '24×'])
+ax.set_xlabel('Training need pressure')
+ax.set_ylabel('Mean achievement score across training')
+ax.set_ylim(0, 5.1)
+ax.grid(axis='y', color='0.9')
+ax.legend(title='Temperature', frameon=False)
+ax.set_title('Fixing temperature changes the pressure comparison', loc='left')
+save(fig, LIFE / 'temperature-control.svg', 'Source: temperature-control.csv, transcribed from the Stage 0 report; whiskers are sample standard deviations across 20 seeds.')
+
+dose = rows(ACTION / 'dose-loss.csv')
+fig, ax = plt.subplots(figsize=(7.2, 4), layout='constrained')
+ax.plot([float(r['synthetic_tokens']) / 1e6 for r in dose],
+        [float(r['final_loss']) for r in dose], 'o-', color='#202020')
+for r in dose:
+    ax.annotate(f"{float(r['final_loss']):.4f}",
+                (float(r['synthetic_tokens']) / 1e6, float(r['final_loss'])),
+                xytext=(0, 10), textcoords='offset points', ha='center')
+ax.set_xlabel('Synthetic warm-up tokens (millions)')
+ax.set_ylabel('Held-out English loss (nats)')
+ax.set_title('A shorter warm-up kept part of the gain', loc='left')
+ax.grid(axis='y', color='0.9')
+save(fig, ACTION / 'dose-loss.svg', 'Source: dose-loss.csv, from results/results.json. One seed per dose; all runs used the same English budget.')

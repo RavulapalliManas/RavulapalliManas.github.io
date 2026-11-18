@@ -1,0 +1,7 @@
+pressure,temperature,mean_score,sample_sd,seeds
+1,body-dependent,3.723,0.285,20
+6,body-dependent,3.914,0.360,20
+24,body-dependent,3.624,0.349,20
+1,fixed,4.032,0.262,20
+6,fixed,4.081,0.250,20
+24,fixed,3.775,0.248,20
