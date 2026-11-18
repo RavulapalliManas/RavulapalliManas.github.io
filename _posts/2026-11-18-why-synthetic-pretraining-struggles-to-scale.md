@@ -5,13 +5,13 @@ description: "What a synthetic warm-up must buy to justify its compute, and what
 tags: [language models, pre-pretraining, scaling]
 ---
 
-**TL;DR.** A synthetic warm-up can improve loss at every fixed text budget and still become a worse use of compute. In a model we can solve exactly, this happens when synthetic training corrects the errors that language training learns quickly, while the remaining errors respond better to text. Above a calculable budget, every positive warm-up dose loses. My grid-walk runs give a smaller empirical version of the accounting problem. The long warm-up cost about 54 million English tokens in equivalent compute and bought the loss improvement of roughly 18–29 million against the scratch ladder. Whether the same mechanism explains the real runs is a question we can test.
+**TL;DR.** Training on grid walks helped my model predict English. My text-only runs suggest that spending the same compute on more English would have helped more. The math below shows how both can be true, and why a warm-up that helps early can become a poor use of compute as training gets longer.
 
 ## Why start with synthetic data?
 
-A walk around a grid gives a model practice tracking a location across several moves. When it returns to a square, the label it saw earlier becomes useful again. A similar dependency shows up in text when a program uses a variable declared several lines above.
+Take a walk around a grid. Each square has a label, and the labels change from one walk to the next. If you go north, then east, then west, then south, you're back where you started. The first label is useful again. That gives a model practice tracking a state through a sequence of changes. You do something similar when you read a program and work out which value a variable holds at the end.
 
-Pre-pre-training puts exercises like this before ordinary language training. The bet is that a model can practise a specific operation on synthetic examples and then learn from fewer English tokens. To save compute, the warm-up also has to beat spending those same resources on more text.
+I wanted to know whether practice on a task like this could reduce how much English a model needs to see. This is the idea behind pre-pre-training, a synthetic stage before ordinary language training. In my grid runs, the long warm-up cost about as much compute as training on 54 million English tokens. It bought the loss improvement of roughly 18–29 million extra English tokens, estimated from runs trained only on text. I wanted to understand how that gap could persist even when the warm-up teaches something useful.
 
 ## What is an NCA, and why use one?
 
@@ -22,6 +22,8 @@ A cellular automaton is a grid whose cells change according to local rules. A ce
 Attention analyses in the NCA paper suggest that some structure transfers. Predicting an automaton's next state can also reward shortcuts, so those results leave open whether the model learns to infer a general transition rule.
 
 ## Does the benefit disappear with scale?
+
+Perplexity measures how well a model predicts held-out text. Lower is better. A gain over scratch means lower perplexity than training the model directly on text.
 
 In the November 2026 revision of the NCA paper, the authors report an OpenWebText perplexity improvement over scratch of 8.6% for a 400-million-parameter model and 5.8% for a 3-billion-parameter model. On FineWeb-Edu, the reported improvement goes in the other direction: 4% at 1.6 billion parameters and 6% at 3 billion, with the language budget also scaled. The 3-billion-parameter FineWeb-Edu run retains a perplexity advantage through 98 billion language tokens. These are relative perplexity comparisons in the authors' settings, not estimates of a universal scaling law. [Source: Lee and colleagues, Figure 3 and Section 5.1.](https://arxiv.org/html/2603.10055v2)
 
@@ -74,13 +76,13 @@ This also gives a **loss threshold**. With the compute spent on the warm-up, the
 
 This form is useful when inversion is unstable. A flat scratch curve makes a tiny change in loss look like a large change in effective tokens. If I can run scratch at the full equivalent budget, I can compare losses there directly. If I only have a bracket of scratch runs, I have to report how I interpolated between them.
 
-### The grid runs, with the warm-up on the bill
+### What did the grid warm-up buy?
 
 [![Across three seeds, the 100M-token warm-up cost the equivalent of 54M English tokens and matched 18–29M extra English tokens. The single 30M run cost 16M and matched 21M.](/images/posts/synthetic-pretraining/grid-compute-break-even.png)](/images/posts/synthetic-pretraining/grid-compute-break-even.png)
 
 *The scratch reference is a single-seed ladder of independently trained runs. The cost uses the study's estimated training FLOPs, with a smaller output vocabulary during the synthetic stage. [Endpoint data](/images/posts/synthetic-pretraining/grid-endpoints.csv).*
 
-In seed zero, the 100-million-token warm-up took the held-out loss from 3.67214 to 3.65663 at the same English budget. The scratch ladder puts the equal-compute target at 3.64351, so the warm-up would have needed about 0.0286 nats of improvement. It delivered about 0.0155. The result cleared the first comparison and fell short in the second.
+In seed zero, the 100-million-token warm-up took the held-out loss from 3.67214 to 3.65663 at the same English budget. The scratch ladder puts the equal-compute target at 3.64351, so the warm-up would have needed about 0.0286 nats of improvement. It delivered about 0.0155. With the same amount of English, the warm-up helped. With the same estimated compute, the English-only model was ahead.
 
 Against the scratch ladder, the estimated compute penalty is about 5–7% across the three long runs. The shorter warm-up comes out about 0.9% ahead in its one run. I also recalculated the study's paired checkpoint comparison in FLOPs. It asks how much compute a warm-started model has spent when it first reaches its paired scratch run's final loss. The long warm-ups range from a 1.9% penalty to a 2.5% saving on that measure. The short run saves 3.7%.
 
@@ -150,7 +152,9 @@ The dose response also depends on the generator. In the revised NCA study, gains
 
 Initialization remains a competing explanation. The NCA paper reports gains over first-order-statistics and mimetic initialization controls. Stern and colleagues show that a different embedding initialization can close the gap in their reproduction. The controls change different parts of the recipe.
 
-## A model in which the warm-up helps and still loses
+## Why a warm-up can stop paying off
+
+The example below gives the warm-up a head start on errors that text corrects quickly. As those errors disappear, the remaining loss comes increasingly from errors that text handles better per unit of compute. The derivation works out when that change makes the best synthetic dose zero.
 
 Suppose both tasks have the same optimal predictor and start from the same parameters. Their gradients can still correct errors at different rates. I use population gradient flow to work out how those rates affect final language loss at fixed compute. Related work studies finite-sample transfer with a shared predictor and fixed-budget allocation for estimating the difference between two ridge optima. [Wu et al., Section 2.](https://arxiv.org/abs/2208.01857) [Buna, Liu and Rebeschini, Sections 2–3.](https://arxiv.org/html/2609.16262v1)
 
