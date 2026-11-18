@@ -7,15 +7,11 @@ tags: [language models, pre-pretraining, scaling]
 
 **TL;DR.** A synthetic warm-up can improve loss at every fixed text budget and still become a worse use of compute. In a model we can solve exactly, this happens when synthetic training corrects the errors that language training learns quickly, while the remaining errors respond better to text. Above a calculable budget, every positive warm-up dose loses. My grid-walk runs give a smaller empirical version of the accounting problem. The long warm-up cost about 54 million English tokens in equivalent compute and bought the loss improvement of roughly 18–29 million against the scratch ladder. Whether the same mechanism explains the real runs is a question we can test.
 
-## A training stage before training?
+## Why start with synthetic data?
 
-Imagine teaching a language model a small game before giving it a book. In the game, the model sees a world change according to rules and learns to predict what happens next. There are no characters to sympathise with and no plot to spoil. But there are dependencies: a change here affects what can happen there, and the answer to a question may depend on something observed many steps ago.
+A walk around a grid gives a model practice tracking a location across several moves. When it returns to a square, the label it saw earlier becomes useful again. A similar dependency shows up in text when a program uses a variable declared several lines above.
 
-The hope is that this practice prepares the model for language. A model reading code needs to track a variable. A model reading a story may need to keep track of where an object was left. A model answering a question about a document needs to connect the question to information earlier in the context. These are not identical problems, but they give us a reason to ask whether a carefully chosen synthetic task might teach a useful ingredient of them.
-
-This extra stage is called *pre-pre-training*. The first “pre” comes before the familiar pre-training on natural language; the second comes from the fact that researchers apparently felt one “pre” was insufficient. The idea is serious even if the name sounds like a loading screen for another loading screen.
-
-The practical motivation is to reduce the text, compute, or time required to reach a useful language-modeling performance. The scientific motivation is different: synthetic worlds let us control what a model experiences, so they may help us understand which kinds of structure transfer. A result can matter for one goal and fail the other. If a warm-up improves the final model but costs more compute than extra language training, it is interesting evidence about learning, but it is not yet a training shortcut.
+Pre-pre-training puts exercises like this before ordinary language training. The bet is that a model can practise a specific operation on synthetic examples and then learn from fewer English tokens. To save compute, the warm-up also has to beat spending those same resources on more text.
 
 ## What is an NCA, and why use one?
 
@@ -23,27 +19,21 @@ A cellular automaton is a grid whose cells change according to local rules. A ce
 
 [Lee and colleagues](https://arxiv.org/html/2603.10055v2) generate sequences from many such systems, represent their states as tokens, and train a language model to predict them. The model can encounter different rules in different sequences. The appeal is that the data contain temporal and spatial dependencies without the meanings, facts, and word frequencies of English. If some training transfers to language after the model's token embeddings are replaced, something beyond a shared vocabulary must be involved.
 
-That still leaves a large gap between *something transfers* and *we know exactly what transferred*. A model may exploit regularities in NCA sequences without learning a general algorithm for inferring arbitrary hidden rules. The paper studies attention and finds evidence consistent with useful transferable structure. Those observations motivate interventions; they do not, on their own, identify the full computation that causes a later language gain.
+Attention analyses in the NCA paper suggest that some structure transfers. Predicting an automaton's next state can also reward shortcuts, so those results leave open whether the model learns to infer a general transition rule.
 
 ## Does the benefit disappear with scale?
 
-The results depend on which corpus and budget you choose. The OpenWebText and FineWeb-Edu comparisons in the revised NCA paper make this unusually clear.
-
 In the November 2026 revision of the NCA paper, the authors report an OpenWebText perplexity improvement over scratch of 8.6% for a 400-million-parameter model and 5.8% for a 3-billion-parameter model. On FineWeb-Edu, the reported improvement goes in the other direction: 4% at 1.6 billion parameters and 6% at 3 billion, with the language budget also scaled. The 3-billion-parameter FineWeb-Edu run retains a perplexity advantage through 98 billion language tokens. These are relative perplexity comparisons in the authors' settings, not estimates of a universal scaling law. [Source: Lee and colleagues, Figure 3 and Section 5.1.](https://arxiv.org/html/2603.10055v2)
 
-Those comparisons change several things together. Model size, the amount and kind of language data, synthetic dose, and training recipe can all matter. When the gap changes, it is tempting to blame the largest model in the room. But size is not the only suspect.
+Model size and language budget change together in the FineWeb-Edu comparison. Those runs cannot isolate the effect of parameter count.
 
-[**Rethinking Pre-pretraining**](https://arxiv.org/html/2610.40051v1), by Stern and colleagues, gives a strong reason to be careful. In their reproduction of an NCA setup, they recover a perplexity gain under the original initialization. Changing the embedding initialization improves the scratch baseline more and makes the two results indistinguishable in that comparison. They did not retune the NCA dose under that alternative initialization in the reproduction, so this does not establish the best possible NCA result under it.
+Stern and colleagues reproduce an NCA gain with the original initialization. Changing the embedding initialization improves the scratch baseline enough to close the gap in that comparison. They did not retune the NCA dose after that change. In their compute-matched experiments, spending the budget on natural-language training yielded lower or comparable validation loss across the synthetic curricula they tested. At larger budgets they searched fewer hyperparameters, and their dose and schedule sweeps cover a limited range. [Rethinking Pre-pretraining.](https://arxiv.org/html/2610.40051v1)
 
-The same study then tests several synthetic curricula under shared compute budgets. Across its tested regimes, synthetic pre-pre-training does not beat allocating that compute to natural-language training on validation loss. Its search is not exhaustive: for example, the larger compute settings receive a reduced hyperparameter search, and the tested synthetic shares do not cover every possible schedule. Those limits matter, but so does the result. A method must compete with the best practical alternative, not merely with the first baseline we happened to train.
+## The grid-walk experiment
 
-The two papers therefore give us a productive tension, not a verdict that one experiment can simply erase the other. Architecture, initialization, data, optimizer, budget and selection differ. The task is to find out which differences change the conclusion.
+In my [earlier experiment](/writing/2026/10/action-warm-up-game/), a small model saw records of walks on a grid. The labels at locations changed between episodes. On a revisit, the model could benefit from remembering an earlier label and using the intervening moves to determine whether it had returned.
 
-## What my grid walks add to the puzzle
-
-I arrived at a related question from a different synthetic world. In my [earlier experiment](/writing/2026/10/action-warm-up-game/), a small model saw records of walks on a grid. The labels at locations changed between episodes. On a revisit, the model could benefit from remembering an earlier label and using the intervening moves to determine whether it had returned.
-
-The model did not choose the moves. It read traces that had already been generated. That distinction matters: this was a test of learning from action information, not an experiment in active exploration.
+The walks were generated before training. The model read the traces and predicted labels.
 
 The main comparison used a 51-million-parameter model. One condition saw the direction of each move; another saw the same kind of walks with directions hidden. After the synthetic stage, the token embeddings were reinitialized and the models trained on the same amount of English. Across three seeds, the visible-move condition had lower final English validation loss than both the hidden-move condition and the no-warm-up baseline. The visible-versus-hidden gap was about 0.045–0.047 nats.
 
@@ -51,11 +41,11 @@ The main comparison used a 51-million-parameter model. One condition saw the dir
 
 *Each line connects one seed across conditions. Lower loss is better. The [plotted values](/images/posts/action-warmup/paired-loss.csv) come from the experiment's score summary.*
 
-The comparison suggests that the information provided by moves matters in this recipe. It does not isolate a single spatial computation: hiding the directions also makes the synthetic prediction problem harder, changing the learning signal. Nor does it show that an NCA model works the same way. The experiment is a useful analogy with its own controls, not an NCA replication.
+Hiding the moves also makes label prediction harder, so this comparison changes both the available spatial information and the difficulty of the warm-up.
 
-There is a second clue. I identified attention heads that looked from revisits toward earlier visits during the game, then disabled them after English training. In two of three seeds, disabling those heads harmed recall and the in-context probe more than any of 20 sampled random head sets. In the third, the effect was not clearly separated from random sets. This tells us that some heads selected during synthetic training matter to the final model in these tests. It does **not** show that those heads caused the warm-up's language-loss advantage, or that the same computation survived unchanged.
+I disabled the attention heads that most strongly attended from a revisit to an earlier visit. In two of three seeds, removing those heads after English training hurt recall and the in-context probe more than any of 20 sampled random head sets. The third seed did not separate from the random sets. This measures a contribution to probe performance after training. The effect on the original language-loss gain remains untested.
 
-Even the less convenient observations are informative. Loop-heavy walks improved the grid task but generally transferred worse than ordinary walks. A random-label control hurt later language performance. More synthetic practice, or better performance on the synthetic task, is not automatically more useful practice for language.
+Loop-heavy walks improved the grid task and generally transferred worse than ordinary walks. Random labels hurt later language performance.
 
 ## The break-even condition
 
@@ -152,27 +142,19 @@ A fixed warm-up can therefore keep saving the same absolute amount of compute an
 
 There is a practical falsification test. Estimate the horizontal shift on an early, prespecified part of the curves. Use the scratch curve and that one shift to predict the later warmed loss. If the prediction misses beyond independent training-run variation, a constant shift is inadequate for that recipe. When both curves are nearly flat, compare the predicted and observed losses directly. The uncertainty on the inverse, measured in tokens, can be large even when the uncertainty in loss is small.
 
-## Four explanations for a shrinking advantage
+## Why the advantage might shrink
 
-Suppose a carefully controlled experiment finds a smaller language-loss gap after more training. What could that mean? At least four explanations deserve to compete. They can coexist, and none is established by a shrinking gap alone.
+The scratch model could learn the same operation later. Alternatively, the warm-started model could lose access to it. Stern and colleagues found that synthetic-task performance deteriorated after the switch to language. Interleaving preserved that performance, with no clear language-loss improvement in all settings. The synthetic-task result alone cannot establish whether a circuit was erased. [Rethinking Pre-pretraining.](https://arxiv.org/html/2610.40051v1)
 
-**1. The scratch model catches up.** The warm-up may accelerate the acquisition of a useful capability that language training can also teach. In this picture, the NCA model keeps the capability, but the scratch model gradually acquires a functionally comparable one. A smaller performance gap need not mean the early model forgot anything.
+The dose response also depends on the generator. In the revised NCA study, gains continued over the tested budgets with the smallest state alphabet. Larger alphabets plateaued or declined. I wrote to Seungwook Han to ask whether larger models might need larger synthetic doses. A useful comparison would vary alphabet and dose independently at each model size. [Training Language Models via Neural Cellular Automata.](https://arxiv.org/html/2603.10055v2)
 
-**2. Later training changes access to the early capability.** A model may retain information from synthetic training but stop using it, use it through a different pathway, or lose task performance altogether. These are different outcomes. A decline on the original synthetic task is evidence of declining behaviour on that task; it does not by itself prove that a specific circuit was erased.
-
-Stern and colleagues observe that performance on the synthetic distributions deteriorates after the switch to language. Interleaving synthetic examples preserves that performance in their experiment, but does not establish a statistically clear improvement in language validation loss. Keeping a skill and making that skill useful for language are two separate hurdles.
-
-**3. The curriculum runs out of useful signal.** More trajectories do not necessarily mean more transferable structure. The revised NCA paper finds that the relationship between dose and downstream benefit depends on the state alphabet: the smallest tested alphabet continues improving over the explored budgets, while larger alphabets plateau or decline. That is evidence of dose and generator dependence, not a direct count of distinct algorithms the model has learned.
-
-I wrote to Seungwook Han to ask whether larger models might need larger synthetic doses. The published dose results make the next step clear: vary the generator and dose independently, rather than assuming that one fixed token budget is fair at every model size. A plateau could reflect redundancy, difficulty, optimization, or mismatch with the target domain; the curve alone cannot pick a winner.
-
-**4. The comparison rewards a weak starting point.** Synthetic training changes weights before language training. Some of its apparent benefit may overlap with improvements available from initialization, learning-rate schedules, or optimizer choices. That is why the Stern initialization result matters. The NCA authors also compare against first-order-statistics and mimetic initialization controls and report remaining gains. These controls address particular alternatives; neither study has ruled out every other initialization or training recipe.
+Initialization remains a competing explanation. The NCA paper reports gains over first-order-statistics and mimetic initialization controls. Stern and colleagues show that a different embedding initialization can close the gap in their reproduction. The controls change different parts of the recipe.
 
 ## A model in which the warm-up helps and still loses
 
-The break-even test tells us whether to pay for a warm-up. It leaves open how a method can clear that test at one budget and fail it at another. For that, suppose the synthetic task and the language task agree on the best answer. Give them the same starting point and let them differ in which errors they correct fastest. This is a deliberately favourable model of transfer. By giving both tasks the same optimum, we can ask what different learning rates do on their own. Wu and colleagues study shared-predictor transfer with finite-sample SGD. Buna, Liu and Rebeschini study fixed-budget allocation for approximating the update between two ridge optima. Here the readout is final language loss, and both tasks share their optimum. [Wu et al., Section 2.](https://arxiv.org/abs/2208.01857) [Buna, Liu and Rebeschini, Sections 2–3.](https://arxiv.org/html/2609.16262v1)
+Suppose both tasks have the same optimal predictor and start from the same parameters. Their gradients can still correct errors at different rates. I use population gradient flow to work out how those rates affect final language loss at fixed compute. Related work studies finite-sample transfer with a shared predictor and fixed-budget allocation for estimating the difference between two ridge optima. [Wu et al., Section 2.](https://arxiv.org/abs/2208.01857) [Buna, Liu and Rebeschini, Sections 2–3.](https://arxiv.org/html/2609.16262v1)
 
-### Start with two ways of seeing the same answer
+### One predictor, two training distributions
 
 Take a linear predictor with squared loss and a shared teacher <math><msup><mi>w</mi><mo>∗</mo></msup></math>. An input with feature vector <math><mi>x</mi></math> has label <math><msup><mi>x</mi><mo>⊤</mo></msup><msup><mi>w</mi><mo>∗</mo></msup></math>. If the current parameter error is <math><mi>ε</mi><mo>=</mo><mi>w</mi><mo>−</mo><msup><mi>w</mi><mo>∗</mo></msup></math>, the squared prediction error is <math><msup><mrow><mo>(</mo><msup><mi>x</mi><mo>⊤</mo></msup><mi>ε</mi><mo>)</mo></mrow><mn>2</mn></msup></math>. Averaging over inputs gives the two population losses:
 
@@ -318,32 +300,13 @@ The gradient that matters is the gradient of the **future** validation loss with
 
 In real pre-pre-training, switching vocabularies can reset parameters and Adam can carry or discard momentum. Training also uses discrete batches and schedules. Rather than treating the gradient formula as a Transformer prediction, we can estimate the comparison with a small fork experiment. Spend equal FLOPs on a short synthetic prefix and a language prefix, apply identical transition rules in both arms, then continue on the same text. Evaluate their held-out loss difference as continuation length grows. A standard uninterrupted language-only arm measures the cost of imposing a transition at all. A separate finite-dose experiment still has to establish whether any useful training budget is saved.
 
-## What experiment would separate them?
+## How I would test it
 
-The first milestone should be modest: establish a reproducible gap under a fair comparison before trying to explain its disappearance. Select one NCA generator and one language distribution. Train scratch and synthetic-warm-up models with comparable tuning opportunities, record all training stages, and measure held-out language loss against **total** compute, including the synthetic stage. Include strong initialization and language-only baselines. A matched-language-token comparison can still be shown, but it answers a different question: whether extra synthetic work helps, not whether it is the best use of that work.
+Start with one model size, one NCA generator, and one text corpus. Give the scratch and warm-started runs comparable tuning budgets. Estimate the horizontal shift from early checkpoints and test whether it predicts later loss on fresh runs. To estimate compute savings, use runs whose learning-rate schedules end near the chosen loss target and include the synthetic stage in the bill. Then repeat the comparison at a second model size using some of the same text budgets.
 
-Then vary model size and language budget separately. Start with one size and several language budgets, and test the constant-shift prediction on later checkpoints. Repeat a small set of those budgets at a second size. That gives a comparison at equal language exposure alongside the comparisons designers usually make, where the language budget increases with model size. Screen synthetic doses on development runs and choose the dose and useful effect threshold before opening fresh confirmation runs. A larger dose that restores the same-text gap but still fails break-even would change the interpretation of transfer while leaving the compute decision unchanged. The independent unit for uncertainty is the training run, not the number of evaluation sentences. If models share a warm-up checkpoint, their later branches do not become independent histories merely because their continuation seeds differ.
+The two-rate model predicts that a short synthetic prefix will help most on examples that scratch learns quickly and may lag on examples that scratch learns more slowly. Define the groups with an independent scratch trajectory, then test that prediction with fresh examples and independently trained pairs. Using separate runs keeps noise in the scratch scores from creating an apparent effect. Branches from the same warm-up checkpoint still share their synthetic training history.
 
-For the efficiency comparison, pick a held-out loss target above the floor both arms can reach. Compare costs at that target and report the curves on both language and total-compute axes. A checkpoint early in a long run can have a different learning-rate schedule from a shorter run trained to finish there. Use independently scheduled endpoint runs to check a result based on intermediate crossings.
-
-The two-rate model suggests a cheaper check before any circuit intervention. On a development corpus, use scratch checkpoints to define groups of examples whose remaining loss improves quickly and slowly over a specified budget window. Freeze the grouping rule and the window. Assign fresh examples using a scratch trajectory held out from the final comparison. Then test on independently trained pairs whether the synthetic prefix gains mainly on the faster group and loses ground on the slower one. Using separate runs for group assignment prevents a noisy scratch loss from defining its own apparent gain. These groups are behavioural measurements, so a successful prediction would still leave the internal mechanism open. Failure would count against this particular explanation of the crossover.
-
-Only after a stable gap is established should we ask what happens inside the model. Build a separate, controlled rule-inference evaluation with held-out rules and initial states. Check that simple shortcuts cannot solve it, and include cases where a plausible strategy should fail. At checkpoints during language training, ask:
-
-- **Behaviour:** Can each model infer and apply a rule, including after the rule changes?
-- **Information:** Can a held-out probe recover the rule or state from its activations? A successful probe shows information is available to the probe, not that the model uses it.
-- **Causal use:** When a targeted intervention changes the relevant information, does the model's behaviour change as predicted? Compare against matched control interventions and test for general damage to the model.
-- **Recovery:** Can the earlier behaviour be restored by a controlled intervention or a small amount of retraining? Recovery would constrain the explanation, but it would not by itself reveal a unique original circuit.
-
-If scratch models acquire similar behaviour while the warm-started models retain theirs, the evidence would support functional convergence. If warm-started models lose causal use while information remains decodable, a change in readout or routing becomes plausible. If both decline, erasure and reorganization remain possible. A failed probe or intervention could also miss a distributed representation. None of these results alone proves that the tested computation caused the language-loss gap. That requires an intervention that changes the putative computation and measures the effect on subsequent language learning, with controls for the disruption it introduces.
-
-## The question behind the question
-
-The larger idea is that training history may matter even when two models finish with similar language loss. One may reach a solution through synthetic experience; another may reach comparable predictions through language alone. Equal scores do not guarantee identical internal strategies. Conversely, different internal patterns do not prove a consequential difference in what the models can do.
-
-I am interested in developmental timing for that reason. An early experience might help a model acquire a capability, change how later training uses it, or leave little trace that matters for the final objective. These possibilities lead to different engineering decisions. If scratch models simply catch up, the synthetic phase may be valuable only at small budgets. If a useful capability becomes inaccessible, preserving or reintroducing it could be worth testing. If it remains intact but has little relevance to language, more preservation may solve the wrong problem.
-
-This is also why I would hold off on introducing a new architecture at the start. A TEM-inspired model, replay schedule, or more elaborate generator may eventually be useful, but each adds decisions before we know which failure it needs to fix. First establish the gap, give the baseline a fair chance, and make the competing explanations disagree on a measurement. The synthetic world should earn its place in the training budget—and the theory should earn its place in the story.
+If the loss gap survives those controls, use held-out rules and initial states to test whether each model acquires and uses the same operation. Compare behavioural performance, decoding, and targeted interventions against matched controls. A causal claim about the language-loss gain requires changing the candidate computation during training and measuring the effect on subsequent learning.
 
 ## References
 
